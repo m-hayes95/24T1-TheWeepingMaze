@@ -7,11 +7,13 @@ using TMPro;
 public class UIHUD : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI hp;
-    [SerializeField] TMP_Text timer;
+    [SerializeField] TextMeshProUGUI torchTimer;
+    [SerializeField] TextMeshProUGUI gameTimer;
 
     private void Update()
     {
         hp.text = FindObjectOfType<PlayerController>().GetPlayerHp().ToString();
-        timer.text = FindObjectOfType<Torch>().GetCurrentTorchTime().ToString("0.0");
+        torchTimer.text = FindObjectOfType<Torch>().GetCurrentTorchTime().ToString("00.0");
+        gameTimer.text = FindObjectOfType<GameManager>().GetCurrentGameTime().ToString("00.00");
     }
 }
