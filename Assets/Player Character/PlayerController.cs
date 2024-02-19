@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision != null)
         {
-            Debug.Log($"Player hit {collision.collider.gameObject.name}");
+            //Debug.Log($"Player hit {collision.collider.gameObject.name}");
 
             if (collision.collider.GetComponent<EnemyAI>())
             {
