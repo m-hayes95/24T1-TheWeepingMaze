@@ -46,4 +46,6 @@ public class Torch : MonoBehaviour
         _torch.transform.RotateAround(transform.position, Vector3.forward,
             mouseMovement * Time.deltaTime * -rotateSpeed);
     }
+
+    
 }
