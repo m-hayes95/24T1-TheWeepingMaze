@@ -2834,6 +2834,14 @@ PrefabInstance:
       propertyPath: rotateSpeed
       value: 821
       objectReference: {fileID: 0}
+    - target: {fileID: 4491860923879902349, guid: 85dc463b6c0e07b4eae601b9ffcae883, type: 3}
+      propertyPath: rechargeTimer
+      value: 5.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491860923879902349, guid: 85dc463b6c0e07b4eae601b9ffcae883, type: 3}
+      propertyPath: batteryMaxTime
+      value: 9.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5964719664713382572, guid: 85dc463b6c0e07b4eae601b9ffcae883, type: 3}
       propertyPath: m_Name
       value: Player Prototype
