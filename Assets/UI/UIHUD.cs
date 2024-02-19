@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIManager : MonoBehaviour
+public class UIHUD : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI hp;
     [SerializeField] TMP_Text timer;
