@@ -75,4 +75,9 @@ public class Torch : MonoBehaviour
         isTorchCharging = false;
         Debug.Log("Battery fully charged");
     }
+
+    public float GetCurrentTorchTime()
+    {
+        return batteryCurrentTime;
+    }
 }

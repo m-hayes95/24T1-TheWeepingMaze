@@ -46,4 +46,9 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public int GetPlayerHp()
+    {
+        return hp;
+    }
 }

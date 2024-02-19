@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6.22
-  maxHp: 0
+  maxHp: 3
   hp: 0
 --- !u!114 &4491860923879902349
 MonoBehaviour:
@@ -240,7 +240,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _torch: {fileID: 1652168945106207734}
-  rotateSpeed: 2.79
+  rotateSpeed: 821
+  batteryMaxTime: 9.1
+  rechargeTimer: 5.02
+  batteryCurrentTime: 0
 --- !u!114 &8485614460846718982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4561dd9e0df82c49a1177a5a6e100e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 5.42
   maxHp: 3
   hp: 0
 --- !u!50 &8051295788905546066
