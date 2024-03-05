@@ -12,12 +12,12 @@ public class MazeCellObject : MonoBehaviour
     // Only run code if its being compiled in the Unity Editor
     // Do not include in final build of the game
 
-    static List<Stack<MazeCellObject>> pools;
+    private static List<Stack<MazeCellObject>> pools;
 
     // Before loading the scene, check if there are any pools
     // If yes, clear them and make a new pool
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    static void ClearPools()
+    private static void ClearPools()
     {
         if (pools == null) 
             pools = new();
