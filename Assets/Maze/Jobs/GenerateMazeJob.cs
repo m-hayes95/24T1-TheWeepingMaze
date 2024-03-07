@@ -11,6 +11,8 @@ public struct GenerateMazeJob : IJob
 {
     public Maze maze;
     public int seed;
+    public float pickLastProbability;
+    public float openDeadEndProbability;
 
     // Using depth-first search alogrithm to run through the maze
     public void Execute()
@@ -28,12 +30,31 @@ public struct GenerateMazeJob : IJob
         // Get the last active maze cell and find passages for it
         while (firstActiveIndex <= lastActiveIndex)
         {
-            int index = activeIndices[lastActiveIndex];
+            bool pickLast = random.NextFloat() < pickLastProbability;
+            int randomActiveIndex, index;
+            if (pickLast)
+            {
+                randomActiveIndex = 0;
+                index = activeIndices[lastActiveIndex];
+            }
+            else
+            {
+                randomActiveIndex = random.NextInt(firstActiveIndex, lastActiveIndex + 1);
+                index = activeIndices[randomActiveIndex];
+            }
+            
             int availablePassageCount = FindAvailablePassages(index, scratchpad);
             // No more available cells, go back
             if (availablePassageCount <= 1)
             {
-                lastActiveIndex -= 1;
+                if (pickLast)
+                {
+                    lastActiveIndex -= 1;
+                }
+                else
+                {
+                    activeIndices[randomActiveIndex] = activeIndices[firstActiveIndex++];
+                }
             }
             // Find next available cell
             if (availablePassageCount > 0)
@@ -46,6 +67,29 @@ public struct GenerateMazeJob : IJob
                 activeIndices[++lastActiveIndex] = passage.Item1;
             }
         }
+        if (openDeadEndProbability > 0)
+        {
+            random = OpenDeadEnds(random, scratchpad);
+        }
+    }
+    // After maze is built, go through and randomly replace dead end maze pieces - depending on multiplier
+    Random OpenDeadEnds(
+        Random random, NativeArray<(int, MazeFlag, MazeFlag)> scratchpad
+        )
+    {
+        for (int i = 0; i < maze.Length; i++)
+        {
+            MazeFlag cell = maze[i];
+            if (cell.HasExactlyOne() && random.NextFloat() < openDeadEndProbability)
+            {
+                int availablePassageCount = FindClosedPassages(i, scratchpad, cell);
+                (int, MazeFlag, MazeFlag) passage = 
+                    scratchpad[random.NextInt(0, availablePassageCount)];
+                maze[i] = cell.With(passage.Item2);
+                maze.Set(i + passage.Item1, passage.Item3);
+            }
+        }
+        return random;
     }
 
     // Check if current maze cell has an empty neighbour
@@ -87,4 +131,30 @@ public struct GenerateMazeJob : IJob
         }
         return count;
     }
+    int FindClosedPassages (
+        int index, NativeArray<(int, MazeFlag, MazeFlag)> scratchpad, MazeFlag exclude
+        )
+    {
+        int2 coordinates = maze.IndexToCoordinates( index );
+        int count = 0;
+        if (exclude != MazeFlag.PassageE && coordinates.x +1 < maze.SizeEW)
+        {
+            scratchpad[count++] = (maze.StepE, MazeFlag.PassageE, MazeFlag.PassageW);
+        }
+        if (exclude != MazeFlag.PassageW && coordinates.x > 0)
+        {
+            scratchpad[count++] = (maze.StepW, MazeFlag.PassageW, MazeFlag.PassageE);
+        }
+        if (exclude != MazeFlag.PassageN && coordinates.y + 1 < maze.SizeNS)
+        {
+            scratchpad[count++] = (maze.StepN, MazeFlag.PassageN, MazeFlag.PassageS);
+        }
+        if (exclude != MazeFlag.PassageS && coordinates.y > 0)
+        {
+            scratchpad[count++] = (maze.StepS, MazeFlag.PassageS, MazeFlag.PassageN);
+        }
+        return count;
+    }
 }
+
+

@@ -1943,7 +1943,7 @@ GameObject:
   - component: {fileID: 410593053}
   - component: {fileID: 410593054}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Maze Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1981,6 +1981,8 @@ MonoBehaviour:
     x: 20
     y: 20
   seed: 123
+  pickLastProbability: 0.5
+  openDeadEndsProbability: 1
 --- !u!4 &411713192 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 45451173544204536, guid: b6bb52b5ea4bb9d4d97cdaecd17080de, type: 3}
