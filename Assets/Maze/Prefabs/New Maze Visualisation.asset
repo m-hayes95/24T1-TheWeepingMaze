@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d62aaa08fe0354438acb604946608b8, type: 3}
   m_Name: New Maze Visualisation
   m_EditorClassIdentifier: 
-  deadEndMaze: {fileID: 4006179664235289410, guid: a7ffd5e5826c5ea44b46aa8b0a6aec19, type: 3}
-  straightMaze: {fileID: 3504375332197129762, guid: 8cdc8acf26b9dbe4ba7f947370d741e4, type: 3}
-  cornerMaze: {fileID: -5544120015813587951, guid: b19323b90e9bb57499c8d50bd3a53d4f, type: 3}
-  tMaze: {fileID: -2225136813675838104, guid: 938219c5577dbbe40861d5772c2ccb95, type: 3}
-  xMaze: {fileID: -6690594239985571608, guid: b56f177d2a72db3449df09e3668b246c, type: 3}
+  deadEndMaze: {fileID: 1290901574921674542, guid: 8f7825b1127060f41913ce91d27d7484, type: 3}
+  straightMaze: {fileID: 1290901574921674542, guid: 1b989497e1a25384ba689e2e5e1dee61, type: 3}
+  cornerMaze: {fileID: 1290901574921674542, guid: 0a1519d293173ea4b99f3e63fb58b054, type: 3}
+  tMaze: {fileID: 1290901574921674542, guid: 30f7046cc7353b24a868356c6e5b32f5, type: 3}
+  xMaze: {fileID: 1290901574921674542, guid: 408e958cc08b4694787ec67f910f3c55, type: 3}

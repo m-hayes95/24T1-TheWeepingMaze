@@ -50,10 +50,10 @@ public class MazeVisualisation : ScriptableObject
         MazeFlag.PassageS | MazeFlag.PassageW => (cornerMaze, 2),
         MazeFlag.PassageW | MazeFlag.PassageN => (cornerMaze, 3),
 
-        MazeFlag.PassageAll & ~MazeFlag.PassageN => (tMaze, 0),
-        MazeFlag.PassageAll & ~MazeFlag.PassageE => (tMaze, 1),
-        MazeFlag.PassageAll & ~MazeFlag.PassageS => (tMaze, 2),
-        MazeFlag.PassageAll & ~MazeFlag.PassageW => (tMaze, 3),
+        MazeFlag.PassageAll & ~MazeFlag.PassageW => (tMaze, 0),
+        MazeFlag.PassageAll & ~MazeFlag.PassageN => (tMaze, 1),
+        MazeFlag.PassageAll & ~MazeFlag.PassageE => (tMaze, 2),
+        MazeFlag.PassageAll & ~MazeFlag.PassageS => (tMaze, 3),
 
         _ => (xMaze, 0)
 
