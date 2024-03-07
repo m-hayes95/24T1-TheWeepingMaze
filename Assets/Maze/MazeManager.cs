@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
@@ -7,9 +8,10 @@ using static Unity.Mathematics.math;
 
 public class MazeManager : MonoBehaviour
 {
-    [SerializeField] private MazeVisualisation visualisation;
+    public
+    MazeVisualisation visualisation;
     [SerializeField] private int2 mazeSize = int2(20,20);
-    private Maze maze;
+    Maze maze;
 
     private void Awake()
     {

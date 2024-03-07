@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d62aaa08fe0354438acb604946608b8, type: 3}
+  m_Name: New Maze Visualisation
+  m_EditorClassIdentifier: 
+  deadEndMaze: {fileID: 4006179664235289410, guid: a7ffd5e5826c5ea44b46aa8b0a6aec19, type: 3}
+  straightMaze: {fileID: 3504375332197129762, guid: 8cdc8acf26b9dbe4ba7f947370d741e4, type: 3}
+  cornerMaze: {fileID: -5544120015813587951, guid: b19323b90e9bb57499c8d50bd3a53d4f, type: 3}
+  tMaze: {fileID: -2225136813675838104, guid: 938219c5577dbbe40861d5772c2ccb95, type: 3}
+  xMaze: {fileID: -6690594239985571608, guid: b56f177d2a72db3449df09e3668b246c, type: 3}
