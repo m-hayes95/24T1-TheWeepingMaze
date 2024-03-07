@@ -14,12 +14,14 @@ public class MazeManager : MonoBehaviour
     [SerializeField] private MazeVisualisation visualisation;
     [SerializeField] private int2 mazeSize = int2(20,20);
     [SerializeField, Tooltip("Use zero for a random seed.")] private int seed;
-    [SerializeField, Range(0f, 1f), Tooltip("Chances of picking last instead of random")] 
+    [SerializeField, Range(0f, 1f), Tooltip("Chances of picking last instead of random (0 = low prob, 1 = higher prob)")] 
     private float pickLastProbability = 0.5f;
     [SerializeField, Range(0f, 1f), 
         Tooltip("How many dead ends should be opened (0 = none, 1 = higher possible amount)")]
     private float openDeadEndsProbability = 0.5f;
-
+    [SerializeField, Range(0f, 1f),
+        Tooltip("How many randomly choosen passages should be opened (0 = none, 1 = higher possible amount)")]
+    private float openRandomPassageProbability = 0.5f;
     private Maze maze;
 
     
@@ -31,7 +33,8 @@ public class MazeManager : MonoBehaviour
             maze = maze,
             seed = seed != 0 ? seed : Random.Range(1, int.MaxValue),
             pickLastProbability = pickLastProbability,
-            openDeadEndProbability = openDeadEndsProbability
+            openDeadEndProbability = openDeadEndsProbability,
+            openRandomPassageProbability = openRandomPassageProbability
         }.Schedule().Complete();
 
         visualisation.Visualise(maze);

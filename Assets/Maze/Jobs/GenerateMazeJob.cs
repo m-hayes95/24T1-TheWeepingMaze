@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Collections;
+using UnityEngine.UIElements;
 
 // Created using tutorial: https://catlikecoding.com/unity/tutorials/prototypes/maze-2/
 
@@ -13,6 +14,7 @@ public struct GenerateMazeJob : IJob
     public int seed;
     public float pickLastProbability;
     public float openDeadEndProbability;
+    public float openRandomPassageProbability;
 
     // Using depth-first search alogrithm to run through the maze
     public void Execute()
@@ -71,6 +73,30 @@ public struct GenerateMazeJob : IJob
         {
             random = OpenDeadEnds(random, scratchpad);
         }
+        if (openRandomPassageProbability > 0)
+        {
+            random = OpenRandomPassage(random);
+        }
+    }
+
+    Random OpenRandomPassage (Random random)
+    {
+        for (int i = 0; i < maze.Length; i++)
+        {
+            int2 coordinates = maze.IndexToCoordinates(i);
+            if (coordinates.x > 0 && random.NextFloat() < openRandomPassageProbability)
+            {
+                maze.Set(i, MazeFlag.PassageW);
+                maze.Set(i + maze.StepW, MazeFlag.PassageE);
+            }
+            if (coordinates.y > 0 && random.NextFloat() < openRandomPassageProbability)
+            {
+                maze.Set(i, MazeFlag.PassageS);
+                maze.Set(i + maze.StepS, MazeFlag.PassageN);
+            }
+            
+        }
+        return random;
     }
     // After maze is built, go through and randomly replace dead end maze pieces - depending on multiplier
     Random OpenDeadEnds(
