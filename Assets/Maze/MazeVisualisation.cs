@@ -27,7 +27,7 @@ public class MazeVisualisation : ScriptableObject
         for (int i = 0; i < maze.Length; i++)
         {
             // using tuple struct
-            (MazeCellObject, int) prefabWithRotation = GetPrefab((MazeFlag)(i % 16)); 
+            (MazeCellObject, int) prefabWithRotation = GetPrefab(maze[i]); 
             MazeCellObject instance = prefabWithRotation.Item1.GetInstance();
             instance.transform.SetPositionAndRotation(
                 maze.IndexToWorldPosition(i), rotations[prefabWithRotation.Item2]

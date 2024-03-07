@@ -1980,6 +1980,7 @@ MonoBehaviour:
   mazeSize:
     x: 20
     y: 20
+  seed: 0
 --- !u!4 &411713192 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 45451173544204536, guid: b6bb52b5ea4bb9d4d97cdaecd17080de, type: 3}
