@@ -1980,10 +1980,10 @@ MonoBehaviour:
   mazeSize:
     x: 20
     y: 20
-  seed: 123
-  pickLastProbability: 0.5
-  openDeadEndsProbability: 0.5
-  openRandomPassageProbability: 0.25
+  seed: 0
+  pickLastProbability: 0.572
+  openDeadEndsProbability: 0.406
+  openRandomPassageProbability: 0.31
 --- !u!4 &411713192 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 45451173544204536, guid: b6bb52b5ea4bb9d4d97cdaecd17080de, type: 3}
@@ -2389,8 +2389,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1, y: -0.85, z: -10.08}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -12.590008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3377,11 +3377,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446649675475458840, guid: 85dc463b6c0e07b4eae601b9ffcae883, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8446649675475458840, guid: 85dc463b6c0e07b4eae601b9ffcae883, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8446649675475458840, guid: 85dc463b6c0e07b4eae601b9ffcae883, type: 3}
       propertyPath: m_LocalPosition.z

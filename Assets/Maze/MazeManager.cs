@@ -23,19 +23,24 @@ public class MazeManager : MonoBehaviour
         Tooltip("How many randomly choosen passages should be opened (0 = none, 1 = higher possible amount)")]
     private float openRandomPassageProbability = 0.5f;
     private Maze maze;
-
     
     private void Awake()
     {
         maze = new Maze(mazeSize);
-        new GenerateMazeJob
-        {
-            maze = maze,
-            seed = seed != 0 ? seed : Random.Range(1, int.MaxValue),
-            pickLastProbability = pickLastProbability,
-            openDeadEndProbability = openDeadEndsProbability,
-            openRandomPassageProbability = openRandomPassageProbability
-        }.Schedule().Complete();
+
+        new FindDiagonalPassagesJob 
+        { 
+            maze = maze  
+        }.ScheduleParallel(
+            maze.Length, maze.SizeEW, new GenerateMazeJob
+            {
+                maze = maze,
+                seed = seed != 0 ? seed : Random.Range(1, int.MaxValue),
+                pickLastProbability = pickLastProbability,
+                openDeadEndProbability = openDeadEndsProbability,
+                openRandomPassageProbability = openRandomPassageProbability
+            }.Schedule()
+        ).Complete();
 
         visualisation.Visualise(maze);
     }

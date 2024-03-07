@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 // Created using tutorial: https://catlikecoding.com/unity/tutorials/prototypes/maze-2/
 
@@ -11,7 +12,14 @@ public enum MazeFlag
     PassageS = 0b0100,
     PassageW = 0b1000,
 
-    PassageAll = 0b1111
+    PassageStraight = 0b1111,
+    // Diagonal Passages
+    PassageNE = 0b0001_0000,
+    PassageSE = 0b0010_0000,
+    PassageSW = 0b0100_0000,
+    PassageNW = 0b1000_0000,
+
+    PassageDiagonal = 0b1111_0000
 }
 
 public static class MazeFlagsExtensions
@@ -33,4 +41,20 @@ public static class MazeFlagsExtensions
 
     public static MazeFlag Without(this MazeFlag flags, MazeFlag mask) =>
         flags & ~mask;
+
+    public static MazeFlag StraightPassages(this MazeFlag flags) =>
+        flags & MazeFlag.PassageStraight;
+
+    public static MazeFlag DiagonalPassages(this MazeFlag flags) =>
+        flags & MazeFlag.PassageDiagonal;
+
+    // Get and rotate diagonal flag rightways by max 4
+    public static MazeFlag RotatedDiagonalPassages(this MazeFlag flags, int rotation)
+    {
+        int bits = (int)(flags & MazeFlag.PassageDiagonal);
+        bits = (bits >> rotation) | (bits << (4 - rotation));
+        return (MazeFlag)bits & MazeFlag.PassageDiagonal;
+    }
 }
+
+
