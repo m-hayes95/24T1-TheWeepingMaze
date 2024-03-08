@@ -1,6 +1,5 @@
+using System;
 using System.Collections.Generic;
-using TMPro;
-using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
@@ -12,10 +11,14 @@ using Random = UnityEngine.Random;
 
 public class MazeManager : MonoBehaviour
 {
-    [SerializeField] private MazeVisualisation visualisation;
-    [SerializeField] private int2 mazeSize = int2(20,20);
-    [SerializeField, Tooltip("Use zero for a random seed.")] private int seed;
-    [SerializeField, Range(0f, 1f), Tooltip("Chances of picking last instead of random (0 = low prob, 1 = higher prob)")] 
+    [SerializeField, Tooltip("Attach reference to the Maze Visualisation Sciptable Object here.")] 
+    private MazeVisualisation visualisation;
+    [SerializeField, Tooltip("Set maze size (X and Z axis)")] 
+    private int2 mazeSize = int2(20,20);
+    [SerializeField, Tooltip("Use zero for a random seed.")] 
+    private int seed;
+    [SerializeField, Range(0f, 1f), 
+        Tooltip("Chances of picking last instead of random (0 = low prob, 1 = higher prob)")] 
     private float pickLastProbability = 0.5f;
     [SerializeField, Range(0f, 1f), 
         Tooltip("How many dead ends should be opened (0 = none, 1 = higher possible amount)")]
@@ -23,11 +26,17 @@ public class MazeManager : MonoBehaviour
     [SerializeField, Range(0f, 1f),
         Tooltip("How many randomly choosen passages should be opened (0 = none, 1 = higher possible amount)")]
     private float openRandomPassageProbability = 0.5f;
-    [SerializeField] private Player player;
+    [SerializeField, Tooltip("Add reference to the player here")] 
+    private Player player;
     [SerializeField, Range(0, 20), Tooltip("Set how many enemies will spawn in when the maze is generated.")]
     private int numberOfEnemies;
     [SerializeField, Tooltip("Place a game object here that has a EnemySpawner script component.")] 
     private GameObject enemy;
+    [SerializeField, Tooltip("Place the end goal prefab here.")] 
+    private EndGoal goal;
+    [SerializeField, Tooltip("Higher the amount, the further the end goal will potentially spawn from the North-East corner of the Maze (Using X and Z axis). " +
+        " Selecting 0 will spawn the goal in the furthest corner from the player.")]
+    private int2 minGoalSpawnArea;
 
     private List<EnemySpawner> enemies;
     private MazeCellObject[] cellObjects;
@@ -59,7 +68,8 @@ public class MazeManager : MonoBehaviour
         }
         visualisation.Visualise(maze, cellObjects);
 
-        // Spawn player - /4 to make sure player spawns in bottom left area
+        // Spawn player - /4 to make sure player spawns in bottom left area,
+        // by reducing the potential amount of size
         if (seed != 0)
         {
             Random.InitState(seed);
@@ -87,10 +97,12 @@ public class MazeManager : MonoBehaviour
         }
 
         int2 halfsize = mazeSize / 2;
-          for (int i = 0; i < enemies.Count; i++) 
+
+        for (int i = 0; i < enemies.Count; i++) 
         {
+            // Make sure enemies spawn away from the player,
+            // by adding half the maze size to there spawn pos, if it is under half size
             var coordinates = int2(Random.Range(0, mazeSize.x), Random.Range(0, mazeSize.y));
-            // Make sure enemies spawn away from the player
             if (coordinates.x < halfsize.x && coordinates.y < halfsize.y)
             {
                 if (Random.value < 0.5f)
@@ -103,8 +115,19 @@ public class MazeManager : MonoBehaviour
                 }
             }
             enemies[i].SpawnEnemies(maze, coordinates);
-            
         }
+
+        // Spawn End Goal
+        minGoalSpawnArea.x = Mathf.Clamp(minGoalSpawnArea.x, 0, mazeSize.x);
+        minGoalSpawnArea.y = Mathf.Clamp(minGoalSpawnArea.y, 0, mazeSize.y);
+        // Need to -1 from max size or it will spawn outside the maze
+        var maxSize = int2(mazeSize.x - 1, mazeSize.y - 1);
+        var coordinatesGoal = int2(
+            Random.Range(maxSize.x - minGoalSpawnArea.x, maxSize.x), 
+            Random.Range(maxSize.y - minGoalSpawnArea.y, maxSize.y)
+        );
+        Debug.Log($" Coodinates for goal: {coordinatesGoal}");
+        goal.FindPositionAndSpawn(maze, coordinatesGoal);
     }
 
     private void Update()
@@ -123,7 +146,8 @@ public class MazeManager : MonoBehaviour
         }
         for (int e = 0; e < enemies.Count; e++)
         {
-            enemies[e].gameObject.SetActive(false);
+            Destroy(enemies[e].gameObject);
         }
+        Destroy(goal.gameObject);
     }
 }
