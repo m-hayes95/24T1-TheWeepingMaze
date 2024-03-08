@@ -24,8 +24,10 @@ public class MazeManager : MonoBehaviour
         Tooltip("How many randomly choosen passages should be opened (0 = none, 1 = higher possible amount)")]
     private float openRandomPassageProbability = 0.5f;
     [SerializeField] private Player player;
-    [SerializeField, Range(0, 20)] int numberOfEnemies;
-    [SerializeField] private GameObject enemy;
+    [SerializeField, Range(0, 20), Tooltip("Set how many enemies will spawn in when the maze is generated.")]
+    private int numberOfEnemies;
+    [SerializeField, Tooltip("Place a game object here that has a EnemySpawner script component.")] 
+    private GameObject enemy;
 
     private List<EnemySpawner> enemies;
     private Maze maze;
@@ -66,8 +68,16 @@ public class MazeManager : MonoBehaviour
         for (int i = 0; i < numberOfEnemies; i++)
         {
             GameObject newEnemy = Instantiate(enemy);
-            newEnemy.SetActive(false);
-            enemies.Add(newEnemy.GetComponent<EnemySpawner>());
+            if (enemy.GetComponent<EnemySpawner>())
+            {
+                newEnemy.SetActive(false);
+                enemies.Add(newEnemy.GetComponent<EnemySpawner>());
+            }
+            else
+            {
+                Debug.LogError($"{enemy.gameObject.name} does not have an EnemySpawner attached!");
+                Destroy(newEnemy);
+            }
         }
 
         int2 halfsize = mazeSize / 2;
