@@ -1,11 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Unity.Mathematics;
 using UnityEngine.SceneManagement;
 
 public class EndGoal : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    private Maze maze;
+    private int targetIndex;
+    private Vector3 targetPoistion;
+    public void FindPositionAndSpawn(Maze maze, int2 coordinates)
+    {
+        Instantiate(gameObject);
+        gameObject.SetActive(false);
+        this.maze = maze;
+        targetIndex = maze.CoordinatesToIndex(coordinates);
+        targetPoistion = transform.localPosition =
+            maze.CoordinatesToWorldPosition(coordinates, transform.localPosition.y);
+        gameObject.SetActive(true);
+    }
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.GetComponent<PlayerController>())
         {
