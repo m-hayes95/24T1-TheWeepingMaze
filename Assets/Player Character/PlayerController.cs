@@ -26,11 +26,11 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.W))
         {
-            gameObject.transform.Translate(Vector2.up * speed * Time.deltaTime);
+            gameObject.transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            gameObject.transform.Translate(Vector2.down * speed * Time.deltaTime);
+            gameObject.transform.Translate(Vector3.back * speed * Time.deltaTime);
         }
     }
 
