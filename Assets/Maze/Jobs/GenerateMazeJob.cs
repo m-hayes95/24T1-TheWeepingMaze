@@ -3,7 +3,6 @@ using System.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Collections;
-using UnityEngine.UIElements;
 
 // Created using tutorial: https://catlikecoding.com/unity/tutorials/prototypes/maze-2/
 
@@ -52,6 +51,7 @@ public struct GenerateMazeJob : IJob
                 if (pickLast)
                 {
                     lastActiveIndex -= 1;
+                    
                 }
                 else
                 {

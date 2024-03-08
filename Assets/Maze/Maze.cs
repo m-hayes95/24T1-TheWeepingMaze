@@ -64,4 +64,7 @@ public struct Maze
     public Vector3 IndexToWorldPosition(int index, float y = 0f) =>
         CoordinatesToWorldPosition(IndexToCoordinates(index), y);
 
+    public int CoordinatesToIndex(int2 coordinates) =>
+        coordinates.y * size.x + coordinates.x;
+
 }

@@ -60,8 +60,8 @@ public class Torch : MonoBehaviour
 
     private void FollowMouse()
     {
-        _torch.transform.RotateAround(transform.position, Vector3.forward,
-            mouseMovement * Time.deltaTime * -rotateSpeed);
+        _torch.transform.RotateAround(transform.position, Vector3.up,
+            mouseMovement * Time.deltaTime * rotateSpeed);
     }
 
     private IEnumerator ChargeBattery()
