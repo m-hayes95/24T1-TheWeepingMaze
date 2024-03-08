@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using Unity.Collections;
 using Unity.Jobs;
@@ -23,9 +24,12 @@ public class MazeManager : MonoBehaviour
         Tooltip("How many randomly choosen passages should be opened (0 = none, 1 = higher possible amount)")]
     private float openRandomPassageProbability = 0.5f;
     [SerializeField] private Player player;
+    [SerializeField, Range(0, 20)] int numberOfEnemies;
+    [SerializeField] private GameObject enemy;
+
+    private List<EnemySpawner> enemies;
     private Maze maze;
 
-    [SerializeField] private EnemySpawner[] enemy;
     private void Awake()
     {
         // Build maze
@@ -58,8 +62,16 @@ public class MazeManager : MonoBehaviour
             );
 
         // Spawn enemies at random locations throughout the maze
+        enemies = new List<EnemySpawner>();
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            GameObject newEnemy = Instantiate(enemy);
+            newEnemy.SetActive(false);
+            enemies.Add(newEnemy.GetComponent<EnemySpawner>());
+        }
+
         int2 halfsize = mazeSize / 2;
-        for (int i = 0; i < enemy.Length; i++) 
+        for (int i = 0; i < enemies.Count; i++) 
         {
             var coordinates = int2(Random.Range(0, mazeSize.x), Random.Range(0, mazeSize.y));
             // Make sure enemies spawn away from the player
@@ -74,7 +86,7 @@ public class MazeManager : MonoBehaviour
                     coordinates.y += halfsize.y;
                 }
             }
-            enemy[i].SpawnEnemies(maze, coordinates);
+            enemies[i].SpawnEnemies(maze, coordinates);
             
         }
     }
