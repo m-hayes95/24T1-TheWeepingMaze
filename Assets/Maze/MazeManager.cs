@@ -30,7 +30,9 @@ public class MazeManager : MonoBehaviour
     private GameObject enemy;
 
     private List<EnemySpawner> enemies;
+    private MazeCellObject[] cellObjects;
     private Maze maze;
+
 
     private void Awake()
     {
@@ -51,7 +53,11 @@ public class MazeManager : MonoBehaviour
             }.Schedule()
         ).Complete();
 
-        visualisation.Visualise(maze);
+        if (cellObjects == null || cellObjects.Length != maze.Length)
+        {
+            cellObjects = new MazeCellObject[maze.Length];
+        }
+        visualisation.Visualise(maze, cellObjects);
 
         // Spawn player - /4 to make sure player spawns in bottom left area
         if (seed != 0)
@@ -81,7 +87,7 @@ public class MazeManager : MonoBehaviour
         }
 
         int2 halfsize = mazeSize / 2;
-        for (int i = 0; i < enemies.Count; i++) 
+          for (int i = 0; i < enemies.Count; i++) 
         {
             var coordinates = int2(Random.Range(0, mazeSize.x), Random.Range(0, mazeSize.y));
             // Make sure enemies spawn away from the player
@@ -98,6 +104,26 @@ public class MazeManager : MonoBehaviour
             }
             enemies[i].SpawnEnemies(maze, coordinates);
             
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            EndGame();
+        }
+    }
+
+    void EndGame()
+    {
+        for (int i = 0; i < cellObjects.Length; i++)
+        {
+            cellObjects[i].Recycle();
+        }
+        for (int e = 0; e < enemies.Count; e++)
+        {
+            enemies[e].gameObject.SetActive(false);
         }
     }
 }

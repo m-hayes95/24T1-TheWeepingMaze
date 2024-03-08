@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 // Created using tutorial: https://catlikecoding.com/unity/tutorials/prototypes/maze-2/

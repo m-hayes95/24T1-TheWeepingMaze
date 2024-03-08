@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Created using tutorial: https://catlikecoding.com/unity/tutorials/prototypes/maze-2/
 
-[CreateAssetMenu(menuName = "Maze Data")]
+[CreateAssetMenu(menuName = "Maze Cell Data")]
 public class MazeVisualisation : ScriptableObject
 {
     [SerializeField]
@@ -22,14 +22,14 @@ public class MazeVisualisation : ScriptableObject
 
 
     // Spawn in instancs of maze pieces using locations from Maze struct
-    public void Visualise(Maze maze)
+    public void Visualise(Maze maze, MazeCellObject[] cellObjects)
     {
 
         for (int i = 0; i < maze.Length; i++)
         {
             // using tuple struct
             (MazeCellObject, int) prefabWithRotation = GetPrefab(maze[i]);
-            MazeCellObject instance = prefabWithRotation.Item1.GetInstance();
+            MazeCellObject instance = cellObjects[i] = prefabWithRotation.Item1.GetInstance();
             instance.transform.SetPositionAndRotation(
                 maze.IndexToWorldPosition(i), rotations[prefabWithRotation.Item2]
                 );
