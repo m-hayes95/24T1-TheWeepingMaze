@@ -6,6 +6,7 @@ using UnityEngine;
 
 using static Unity.Mathematics.math;
 using Random = UnityEngine.Random;
+using Unity.AI.Navigation;
 
 // Created using tutorial: https://catlikecoding.com/unity/tutorials/prototypes/maze-2/
 
@@ -67,6 +68,7 @@ public class MazeManager : MonoBehaviour
             cellObjects = new MazeCellObject[maze.Length];
         }
         visualisation.Visualise(maze, cellObjects);
+        BakeNewNavMesh();
 
         // Spawn player - /4 to make sure player spawns in bottom left area,
         // by reducing the potential amount of size
@@ -128,6 +130,8 @@ public class MazeManager : MonoBehaviour
         );
         Debug.Log($" Coodinates for goal: {coordinatesGoal}");
         goal.FindPositionAndSpawn(maze, coordinatesGoal);
+
+        
     }
 
     private void Update()
@@ -138,7 +142,7 @@ public class MazeManager : MonoBehaviour
         }
     }
 
-    void EndGame()
+    private void EndGame()
     {
         for (int i = 0; i < cellObjects.Length; i++)
         {
@@ -149,5 +153,10 @@ public class MazeManager : MonoBehaviour
             Destroy(enemies[e].gameObject);
         }
         Destroy(goal.gameObject);
+    }
+
+    private void BakeNewNavMesh()
+    {
+        GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 }
