@@ -38,6 +38,8 @@ public class MazeManager : MonoBehaviour
     [SerializeField, Tooltip("Higher the amount, the further the end goal will potentially spawn from the North-East corner of the Maze (Using X and Z axis). " +
         " Selecting 0 will spawn the goal in the furthest corner from the player.")]
     private int2 minGoalSpawnArea;
+    [SerializeField, Tooltip("Set the parent for all enemy game objects spawned in, to be placed under (For ease of managing).")] 
+    private GameObject enemySpawnParent;
 
     private List<EnemySpawner> enemies;
     private MazeCellObject[] cellObjects;
@@ -67,7 +69,7 @@ public class MazeManager : MonoBehaviour
         {
             cellObjects = new MazeCellObject[maze.Length];
         }
-        visualisation.Visualise(maze, cellObjects);
+        visualisation.Visualise(maze, cellObjects, gameObject);
         BakeNewNavMesh();
 
         // Spawn player - /4 to make sure player spawns in bottom left area,
@@ -90,6 +92,14 @@ public class MazeManager : MonoBehaviour
             {
                 newEnemy.SetActive(false);
                 enemies.Add(newEnemy.GetComponent<EnemySpawner>());
+                if (enemySpawnParent != null)
+                {
+                    newEnemy.transform.parent = enemySpawnParent.transform;
+                }
+                else
+                {
+                    Debug.LogWarning("Enemies not set to a parent under the hierachy, add a game object reference to the 'Enemy Spawn Parent' field under the Maze Manager script");
+                }       
             }
             else
             {

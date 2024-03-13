@@ -22,7 +22,7 @@ public class MazeVisualisation : ScriptableObject
 
 
     // Spawn in instancs of maze pieces using locations from Maze struct
-    public void Visualise(Maze maze, MazeCellObject[] cellObjects)
+    public void Visualise(Maze maze, MazeCellObject[] cellObjects, GameObject parent)
     {
 
         for (int i = 0; i < maze.Length; i++)
@@ -33,6 +33,7 @@ public class MazeVisualisation : ScriptableObject
             instance.transform.SetPositionAndRotation(
                 maze.IndexToWorldPosition(i), rotations[prefabWithRotation.Item2]
                 );
+            instance.transform.parent = parent.transform;
         }
     }
 
