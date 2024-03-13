@@ -472,7 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _torch: {fileID: 1036992905}
   rotateSpeed: 491
-  batteryMaxTime: 20
+  batteryMaxTime: 5
   rechargeTimer: 1.81
   batteryCurrentTime: 0
 --- !u!1 &306345058
@@ -909,7 +909,7 @@ MonoBehaviour:
   openDeadEndsProbability: 0.406
   openRandomPassageProbability: 0.2
   player: {fileID: 268537196}
-  numberOfEnemies: 12
+  numberOfEnemies: 5
   enemy: {fileID: 763802120514677541, guid: 3761af0210965b545b6392d4d74c72bf, type: 3}
   goal: {fileID: 1243130314989998280, guid: c601e4c455af70845aa061b34f542838, type: 3}
   minGoalSpawnArea:
@@ -942,7 +942,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
