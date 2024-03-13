@@ -552,8 +552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2.96
-  maxHp: 3
-  hp: 0
 --- !u!114 &268537196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,6 +565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVertOffset: 1
+  maxHp: 5
 --- !u!54 &268537197
 Rigidbody:
   m_ObjectHideFlags: 0

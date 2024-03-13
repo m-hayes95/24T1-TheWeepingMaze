@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UIHUD : MonoBehaviour
@@ -12,7 +11,7 @@ public class UIHUD : MonoBehaviour
 
     private void Update()
     {
-        hp.text = FindObjectOfType<PlayerController>().GetPlayerHp().ToString();
+        hp.text = FindObjectOfType<Player>().GetPlayerHp().ToString();
         torchTimer.text = FindObjectOfType<Torch>().GetCurrentTorchTime().ToString("00.0");
         gameTimer.text = FindObjectOfType<GameManager>().GetCurrentGameTime().ToString("00.00");
     }

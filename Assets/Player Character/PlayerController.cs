@@ -3,16 +3,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField][Range(0f, 10f)] private float speed;
-    [SerializeField][Range(0, 5)] private int maxHp;
-    [SerializeField] private int hp;
 
-    private void Start()
-    {
-        hp = maxHp;
-    }
-
-
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.A))
         {
@@ -30,23 +22,5 @@ public class PlayerController : MonoBehaviour
         {
             gameObject.transform.Translate(Vector3.back * speed * Time.deltaTime);
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision != null)
-        {
-            //Debug.Log($"Player hit {collision.collider.gameObject.name}");
-
-            if (collision.collider.GetComponent<EnemyAI>())
-            {
-                hp --;
-            }
-        }
-    }
-
-    public int GetPlayerHp()
-    {
-        return hp;
     }
 }
