@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    
+    [SerializeField, Range(0f, 1f)] float yOffset;
     private Maze maze;
     private int targetIndex;
     private Vector3 targetPoistion;
@@ -15,6 +15,6 @@ public class EnemySpawner : MonoBehaviour
         gameObject.SetActive(true);
         targetIndex = maze.CoordinatesToIndex(coordinates);
         targetPoistion = transform.localPosition =
-            maze.CoordinatesToWorldPosition(coordinates, transform.localPosition.y);
+            maze.CoordinatesToWorldPosition(coordinates, transform.localPosition.y + yOffset);
     }
 }

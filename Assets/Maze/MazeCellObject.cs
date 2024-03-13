@@ -45,7 +45,10 @@ public class MazeCellObject : MonoBehaviour
 #endif
         }
         if (pool.TryPop(out MazeCellObject instance))
+        {
             instance.gameObject.SetActive(true);
+        }
+            
         else
         {
             instance = Instantiate(this);

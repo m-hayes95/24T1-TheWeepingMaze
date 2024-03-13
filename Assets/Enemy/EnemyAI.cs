@@ -1,82 +1,109 @@
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
     // Controls the enemy agents behaviour.
+    [SerializeField, Range(0f, 5f), Tooltip("Set the speed in which the enemy will chase the player.")] 
+    private float chaseSpeed = 1.5f;
+    [SerializeField, Range(0f, 10f), Tooltip("Set the distance for when the enemy will start chasing the player, and lose pursuit.")] 
+    private float distanceFromPlayerThreshold = 5f;
+    [SerializeField, Range(0f, 10f), Tooltip("Set the time it takes for the enemy to return back to idel from its frozen state.")] 
+    private float freezeTimer;
 
-    public float speed;
-    private float frozenSpeed = 0f;
-    [SerializeField] private float initialSpeed;
-    public Transform pointA, pointB;
-    [SerializeField] private enum EnemySM { PointA, PointB, Freeze };
-    [SerializeField] private EnemySM enemySM;
-    private Vector3 direction;
-    public bool isEnemyInLight = false;
+    private enum EnemySM { Idle, Chase, Freeze };
+    private EnemySM enemySM;
+    private NavMeshAgent agent;
+    private Player player;
+    private Torch torch;
+    private float distanceFromPlayer;
+    private bool isTimerOn = false; // Do timer once
+    private bool isEnemyInLight = false; 
+    public bool IsEnemyInLight
+    {
+        get { return isEnemyInLight; }
+        set { isEnemyInLight = value; }
+    }
 
     private void Start()
     {
-        initialSpeed = speed;
+        agent = GetComponent<NavMeshAgent>();
+        player = FindObjectOfType<Player>();
+        torch = FindObjectOfType<Torch>();
+        enemySM = EnemySM.Idle;
     }
     private void Update()
     {
-        transform.position += direction * speed * Time.deltaTime;
-
+        distanceFromPlayer = Vector3.Distance(player.transform.position, transform.position);
+        // Fix for when the torch turns off and the enemy did not exit the trigger, this bool stays on
+        if (!torch.IsTorchOn)
+        {
+            isEnemyInLight = false;
+        }
         switch (enemySM)
         {
-            case EnemySM.PointA:
-                direction = (pointB.position - transform.position);
-                if (Vector3.Distance(pointB.position, transform.position) < 0.1f)
-                { 
-                    StartCoroutine(TimerAtPointB());
+            case EnemySM.Idle:
+                agent.speed = 0f;
+                if (distanceFromPlayer <= distanceFromPlayerThreshold)
+                {
+                    enemySM = EnemySM.Chase;
                 }
                 break;
 
-            case EnemySM.PointB:
-                direction = (pointA.position - transform.position);
-                if (Vector3.Distance(pointA.position, transform.position) < 0.1f)
+            case EnemySM.Chase:
+                agent.speed = chaseSpeed;
+                if (agent.isOnNavMesh)
                 {
-                    StartCoroutine(TimerAtPointA());
+                    Chase();
+                }
+                if (distanceFromPlayer > distanceFromPlayerThreshold)
+                {
+                    enemySM = EnemySM.Idle;
                 }
                 break;
 
             case EnemySM.Freeze:
-                speed = frozenSpeed;
-                FreezeEnemy();
-                // Dont let enemy move if they are in the light.
-                if (!isEnemyInLight)
+                agent.speed = 0f;
+                if (torch.IsTorchOn)
                 {
-                    StartCoroutine(FreezeEnemyTimer());
+                    if (!isTimerOn)
+                    {
+                        StartCoroutine(FreezeEnemyTimer());
+                    }
                 }
                 
                 break;
-                
-        } 
+        }
     }
 
-    private IEnumerator TimerAtPointA()
+    private void Chase()
     {
-        yield return new WaitForSeconds(2);
-        enemySM = EnemySM.PointA;
-    }
-
-    private IEnumerator TimerAtPointB()
-    {
-        yield return new WaitForSeconds(2);
-        enemySM = EnemySM.PointB;
-    }
-
-    private IEnumerator FreezeEnemyTimer()
-    {
-        yield return new WaitForSeconds(3);
-        enemySM = EnemySM.PointB;
-        speed = initialSpeed;
+        //Debug.Log("Moving");
+        agent.destination = player.transform.position;
     }
 
     public void FreezeEnemy()
     {
         enemySM = EnemySM.Freeze;
     }
+
+    private IEnumerator FreezeEnemyTimer()
+    {
+        isTimerOn = true;   
+        yield return new WaitForSeconds(freezeTimer);
+        isTimerOn = false;
+
+        if (!isEnemyInLight)
+        {
+            enemySM = EnemySM.Idle;
+        }
+        else
+        {
+            StartCoroutine(FreezeEnemyTimer());
+        }
+    }
+
+    
 }
 
