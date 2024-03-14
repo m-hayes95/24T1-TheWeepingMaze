@@ -607,8 +607,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _torch: {fileID: 1036992905}
   batteryMaxTime: 10
-  rechargeTimer: 2
-  batteryCurrentTime: 0
+  fromEmptyRechargeTimer: 0
+  rechargeRate: 2
 --- !u!1 &306345058
 GameObject:
   m_ObjectHideFlags: 0
