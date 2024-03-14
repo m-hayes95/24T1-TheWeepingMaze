@@ -4,7 +4,6 @@ using UnityEngine;
 public class Torch : MonoBehaviour
 {
     [SerializeField] private GameObject _torch;
-    [SerializeField][Range(0f, 1000f)] private float rotateSpeed;
     [SerializeField][Range(0f, 60f)] private float batteryMaxTime;
     [SerializeField][Range(0f, 10f)] private float rechargeTimer;
     [SerializeField] private float batteryCurrentTime;
@@ -20,21 +19,13 @@ public class Torch : MonoBehaviour
 
     private void Start()
     {
-        isTorchOn = true;
+        isTorchOn = false;
         batteryCurrentTime = batteryMaxTime;
     }
 
     private void Update()
     {
-        Debug.Log($"Is torch on {IsTorchOn} "); 
-
-        mouseMovement = Input.GetAxisRaw("Mouse X");
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!isTorchOn && !isTorchCharging) ActivateTorch();
-            else DeActivateTorch();
-        }
+        //Debug.Log($"Is torch on {isTorchOn} "); 
 
         if (batteryCurrentTime >= 0f && isTorchOn)
         {
@@ -44,36 +35,16 @@ public class Torch : MonoBehaviour
                 StartCoroutine(ChargeBattery());
             }
         }
-        
-        
     }
-
-    private void FixedUpdate()
+    public void ToggleTorch()
     {
-        FollowMouse();
-    }
-
-    private void ActivateTorch()
-    {
-        isTorchOn = true;
-        _torch.SetActive(true);
-    }
-
-    private void DeActivateTorch()
-    {
-        isTorchOn = false;
-        _torch.SetActive(false);
-    }
-
-    private void FollowMouse()
-    {
-        _torch.transform.RotateAround(transform.position, Vector3.up,
-            mouseMovement * Time.deltaTime * rotateSpeed);
+        _torch.SetActive(!_torch.activeSelf);
+        isTorchOn = !isTorchOn;
     }
 
     private IEnumerator ChargeBattery()
     {
-        DeActivateTorch();
+        ToggleTorch();
         isTorchCharging = true;
         Debug.Log("Battery is Charging...");
 

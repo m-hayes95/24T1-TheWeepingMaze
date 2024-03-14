@@ -1,26 +1,47 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField][Range(0f, 10f)] private float speed;
+    private Torch torch;
+    private PlayerInput playerInput;
 
-    private void FixedUpdate()
+    private void Awake()
     {
-        if (Input.GetKey(KeyCode.A))
+        playerInput = new PlayerInput();
+    }
+    private void OnEnable()
+    {
+        playerInput.Player.Enable();
+        playerInput.Player.TorchOnOff.performed += GetTorchInput;
+    }
+
+    private void Start()
+    {
+        torch = GetComponent<Torch>();
+    }
+
+    public Vector2 GetMoveVectorNormalized()
+    {
+        return playerInput.Player.Move.ReadValue<Vector2>();
+    }
+
+    public Vector2 GetMousePositionVector()
+    {
+        return playerInput.Player.Rotate.ReadValue<Vector2>();
+    }
+
+    private void GetTorchInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
         {
-            gameObject.transform.Translate(Vector2.left * speed * Time.deltaTime);
+            torch.ToggleTorch();
         }
-        if (Input.GetKey(KeyCode.D))
-        {
-            gameObject.transform.Translate(Vector2.right * speed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            gameObject.transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            gameObject.transform.Translate(Vector3.back * speed * Time.deltaTime);
-        }
+    }
+   
+    private void OnDisable()
+    {
+        playerInput.Player.TorchOnOff.performed -= GetTorchInput;
+        playerInput.Player.Disable();
     }
 }
