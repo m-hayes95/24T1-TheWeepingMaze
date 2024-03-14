@@ -607,7 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _torch: {fileID: 1036992905}
   batteryMaxTime: 10
-  fromEmptyRechargeTimer: 0
+  fromEmptyRechargeTimer: 10
   rechargeRate: 2
 --- !u!1 &306345058
 GameObject:
@@ -961,7 +961,7 @@ MonoBehaviour:
   openDeadEndsProbability: 0.406
   openRandomPassageProbability: 0.2
   player: {fileID: 268537196}
-  numberOfEnemies: 5
+  numberOfEnemies: 1
   enemy: {fileID: 763802120514677541, guid: 3761af0210965b545b6392d4d74c72bf, type: 3}
   goal: {fileID: 1243130314989998280, guid: c601e4c455af70845aa061b34f542838, type: 3}
   minGoalSpawnArea:

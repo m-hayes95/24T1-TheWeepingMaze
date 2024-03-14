@@ -42,11 +42,29 @@ public class Player : MonoBehaviour
         controller.enabled = true;
     }
 
+    public void TakeDamage(int damage)
+    {
+        hp -= damage;
+    }
     private void PlayerMovement()
     {
         Vector2 inputVector = controller.GetMoveVectorNormalized();
         Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
         transform.position += moveDirection * speed * Time.deltaTime;
+    }
+    private void RotateToMousePosition()
+    {
+        Vector2 mousePos = controller.GetMousePositionVector();
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.y));
+
+        Vector3 lookDir = mouseWorldPos - transform.position;
+        // Ensure the player stays upright
+        lookDir.y = 0f;
+
+        Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+
+        // Smoothly rotate the player towards the current mouse position
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
     }
 
     /* This rotation moves left and right when moving the mouse across the screen
@@ -61,33 +79,5 @@ public class Player : MonoBehaviour
     }
     */
 
-    private void RotateToMousePosition()
-    {
-        Vector2 mousePos = controller.GetMousePositionVector();
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.y));
 
-        Vector3 lookDir = mouseWorldPos - transform.position;
-        // Ensure the player stays upright
-        lookDir.y = 0f; 
-
-        Quaternion targetRotation = Quaternion.LookRotation(lookDir);
-
-        // Smoothly rotate the player towards the current mouse position
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision != null)
-        {
-            //Debug.Log($"Player hit {collision.collider.gameObject.name}");
-
-            if (collision.collider.GetComponent<EnemyAI>())
-            {
-                hp--;
-            }
-        }
-    }
-
-    
 }
