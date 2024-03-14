@@ -138,7 +138,7 @@ public class MazeManager : MonoBehaviour
             Random.Range(maxSize.x - minGoalSpawnArea.x, maxSize.x), 
             Random.Range(maxSize.y - minGoalSpawnArea.y, maxSize.y)
         );
-        Debug.Log($" Coodinates for goal: {coordinatesGoal}");
+        //Debug.Log($" Coodinates for goal: {coordinatesGoal}");
         goal.FindPositionAndSpawn(maze, coordinatesGoal);
 
         

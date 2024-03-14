@@ -10,7 +10,7 @@ public class Torch : MonoBehaviour
     [SerializeField] private float batteryCurrentTime;
     private float mouseMovement = 0f;
 
-    private bool isTorchOn;
+    [SerializeField] private bool isTorchOn;
     public bool IsTorchOn
     {
         get { return isTorchOn; }
@@ -20,21 +20,22 @@ public class Torch : MonoBehaviour
 
     private void Start()
     {
-        isTorchOn = true;
+        isTorchOn = false;
         batteryCurrentTime = batteryMaxTime;
     }
 
     private void Update()
     {
-        Debug.Log($"Is torch on {IsTorchOn} "); 
+        Debug.Log($"Is torch on {isTorchOn} "); 
 
         mouseMovement = Input.GetAxisRaw("Mouse X");
-        
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!isTorchOn && !isTorchCharging) ActivateTorch();
             else DeActivateTorch();
         }
+        */
 
         if (batteryCurrentTime >= 0f && isTorchOn)
         {
@@ -52,7 +53,12 @@ public class Torch : MonoBehaviour
     {
         FollowMouse();
     }
-
+    public void ToggleTorch()
+    {
+        _torch.SetActive(!_torch.activeSelf);
+        isTorchOn = !isTorchOn;
+    }
+    /*
     private void ActivateTorch()
     {
         isTorchOn = true;
@@ -64,7 +70,7 @@ public class Torch : MonoBehaviour
         isTorchOn = false;
         _torch.SetActive(false);
     }
-
+    */
     private void FollowMouse()
     {
         _torch.transform.RotateAround(transform.position, Vector3.up,
@@ -73,7 +79,7 @@ public class Torch : MonoBehaviour
 
     private IEnumerator ChargeBattery()
     {
-        DeActivateTorch();
+        ToggleTorch();
         isTorchCharging = true;
         Debug.Log("Battery is Charging...");
 
