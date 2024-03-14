@@ -37,13 +37,22 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Torch"",
+                    ""name"": ""TorchOnOff"",
                     ""type"": ""Button"",
                     ""id"": ""9200d1f4-1975-4ea9-a27c-85fca1bfcdd9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""5352f3d7-ce0d-4dc2-997a-fb6c0ac97f2d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -109,7 +118,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Torch"",
+                    ""action"": ""TorchOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88f9a6a4-be6d-4b31-81ee-89b59167747d"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -121,7 +141,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Torch = m_Player.FindAction("Torch", throwIfNotFound: true);
+        m_Player_TorchOnOff = m_Player.FindAction("TorchOnOff", throwIfNotFound: true);
+        m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -184,13 +205,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Torch;
+    private readonly InputAction m_Player_TorchOnOff;
+    private readonly InputAction m_Player_Rotate;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Torch => m_Wrapper.m_Player_Torch;
+        public InputAction @TorchOnOff => m_Wrapper.m_Player_TorchOnOff;
+        public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -203,9 +226,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Torch.started += instance.OnTorch;
-            @Torch.performed += instance.OnTorch;
-            @Torch.canceled += instance.OnTorch;
+            @TorchOnOff.started += instance.OnTorchOnOff;
+            @TorchOnOff.performed += instance.OnTorchOnOff;
+            @TorchOnOff.canceled += instance.OnTorchOnOff;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -213,9 +239,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Torch.started -= instance.OnTorch;
-            @Torch.performed -= instance.OnTorch;
-            @Torch.canceled -= instance.OnTorch;
+            @TorchOnOff.started -= instance.OnTorchOnOff;
+            @TorchOnOff.performed -= instance.OnTorchOnOff;
+            @TorchOnOff.canceled -= instance.OnTorchOnOff;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -236,6 +265,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnTorch(InputAction.CallbackContext context);
+        void OnTorchOnOff(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }

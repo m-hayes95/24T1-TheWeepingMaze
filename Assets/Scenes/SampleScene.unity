@@ -550,7 +550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4561dd9e0df82c49a1177a5a6e100e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torch: {fileID: 0}
 --- !u!114 &268537196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,6 +563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2.8
+  rotateSpeed: 10
   playerVertOffset: 1
   maxHp: 5
 --- !u!54 &268537197
@@ -606,11 +606,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _torch: {fileID: 1036992905}
-  rotateSpeed: 600
   batteryMaxTime: 10
   rechargeTimer: 2
   batteryCurrentTime: 0
-  isTorchOn: 1
 --- !u!1 &306345058
 GameObject:
   m_ObjectHideFlags: 0

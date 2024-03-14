@@ -3,14 +3,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] Torch torch;
+    private Torch torch;
     private PlayerInput playerInput;
 
-    private void OnEnable()
+    private void Awake()
     {
         playerInput = new PlayerInput();
+    }
+    private void OnEnable()
+    {
         playerInput.Player.Enable();
-        playerInput.Player.Torch.performed += GetTorchInput;
+        playerInput.Player.TorchOnOff.performed += GetTorchInput;
     }
 
     private void Start()
@@ -23,7 +26,12 @@ public class PlayerController : MonoBehaviour
         return playerInput.Player.Move.ReadValue<Vector2>();
     }
 
-    public void GetTorchInput(InputAction.CallbackContext context)
+    public Vector2 GetMousePositionVector()
+    {
+        return playerInput.Player.Rotate.ReadValue<Vector2>();
+    }
+
+    private void GetTorchInput(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -33,9 +41,7 @@ public class PlayerController : MonoBehaviour
    
     private void OnDisable()
     {
-        playerInput.Player.Torch.performed -= GetTorchInput;
+        playerInput.Player.TorchOnOff.performed -= GetTorchInput;
         playerInput.Player.Disable();
     }
-
-
 }
