@@ -25,6 +25,7 @@ public class EnemyAI : MonoBehaviour
     private float distanceFromPlayer;
     private bool isTimerOn = false; // Do timer once
     private bool canAttack = true;
+    private bool isAttackTimerOn = false;
     private bool isEnemyInLight = false; 
     public bool IsEnemyInLight
     {
@@ -79,7 +80,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     enemySM = EnemySM.Idle;
                 } 
-                if (distanceFromPlayer <= distanceFromPlayerAttackThreshold 
+                else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold 
                     && canAttack)
                 {
                     Debug.Log("Player in attack range");
@@ -113,8 +114,13 @@ public class EnemyAI : MonoBehaviour
 
             case EnemySM.AttackCooldown:
                 agent.speed = 0f;
-                StartCoroutine(AttackResetTimer(attackResetTime));
+                if (!isAttackTimerOn) 
+                {
+                    StartCoroutine(AttackResetTimer(attackResetTime));
+                }
+                
                 break;
+
             default:
                 break;
         }
@@ -129,9 +135,12 @@ public class EnemyAI : MonoBehaviour
     private void Attack()
     {
         canAttack = false;
-        int damageDealt = 1;
-        player.TakeDamage(damageDealt);
-        Debug.Log("player took damage");
+
+        if (!isAttackTimerOn)
+        {
+            int damageDealt = 1;
+            player.TakeDamage(damageDealt);
+        }
     }
 
     public void FreezeEnemy()
@@ -156,7 +165,10 @@ public class EnemyAI : MonoBehaviour
     }
     private IEnumerator AttackResetTimer(float timer)
     {
+        isAttackTimerOn = true;
         yield return new WaitForSeconds(timer);
+        Debug.Log("Can attack again");
+        isAttackTimerOn = false;
         canAttack = true;
         if (distanceFromPlayer >= distanceFromPlayerChaseThreshold)
         {
