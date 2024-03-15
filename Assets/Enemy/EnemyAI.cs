@@ -83,7 +83,6 @@ public class EnemyAI : MonoBehaviour
                 else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold 
                     && canAttack)
                 {
-                    Debug.Log("Player in attack range");
                     enemySM = EnemySM.Attack;
                 }
                 break;
@@ -167,7 +166,7 @@ public class EnemyAI : MonoBehaviour
     {
         isAttackTimerOn = true;
         yield return new WaitForSeconds(timer);
-        Debug.Log("Can attack again");
+        //Debug.Log("Can attack again");
         isAttackTimerOn = false;
         canAttack = true;
         if (distanceFromPlayer >= distanceFromPlayerChaseThreshold)
