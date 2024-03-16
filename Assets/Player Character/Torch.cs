@@ -9,8 +9,13 @@ public class Torch : MonoBehaviour
 
     [SerializeField, Tooltip("Add a reference to the torch game object here.")] 
     private GameObject _torch;
-    [SerializeField][Range(0f, 60f), Tooltip("Set how long the battery will last for (set how long the game will last for).")] 
+    [SerializeField, Range(0f, 60f), Tooltip("Set how long the battery will last for (set how long the game will last for).")] 
     private float maxBatteryHealth;
+    [SerializeField, Range(2f, 5f), Tooltip("Set the decay rate for battery health when the torch is ON.")]
+    private float torchOnDecayMultiplier;
+    [SerializeField, Range(1f, 5f), Tooltip("Set the decay rate for battery health when the torch is OFF (A value of 1 is equal to -1 each second).")]
+    private float torchOffDecayMultiplier;
+
 
     private float batteryHealth;
     private bool doEventOnce = false; 
@@ -30,10 +35,17 @@ public class Torch : MonoBehaviour
     private void Update()
     {
         //Debug.Log($"Is torch on {isTorchOn} "); 
-        // Reduce the battery health over time
+        // Reduce the battery health over time, reduce by less if its switched off 
         if (batteryHealth > 0)
         {
-            batteryHealth -= Time.deltaTime;
+            if (IsTorchOn)
+            {
+                batteryHealth -= Time.deltaTime * torchOnDecayMultiplier;
+            }
+            else
+            {
+                batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
+            }
         }
 
         if (batteryHealth <= 0 && !doEventOnce)
@@ -52,6 +64,11 @@ public class Torch : MonoBehaviour
     public void TakeDamage(float damage)
     {
         batteryHealth -= damage;
+    }
+
+    private void ReduceLightInstensity()
+    {
+        // Reduce the light power as the battery health falls
     }
 
     public float GetRemainingBatteryTime()

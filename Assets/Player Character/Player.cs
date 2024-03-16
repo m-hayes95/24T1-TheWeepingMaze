@@ -41,6 +41,14 @@ public class Player : MonoBehaviour
         controller.enabled = true;
     }
 
+    public void PlayerHit() // Called from enemy
+    {
+        // Add knockback
+        // Add hit sound
+        // Add Screenshake
+        // Add red material??
+    }
+
     
     private void PlayerMovement()
     {
@@ -61,6 +69,7 @@ public class Player : MonoBehaviour
             walkingAnim.Rewind();
         }
     }
+
 
     // This rotation moves left and right when moving the mouse across the screen
     private void RotatePlayerMousePosDelta()

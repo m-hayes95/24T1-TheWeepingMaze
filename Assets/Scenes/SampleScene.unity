@@ -621,11 +621,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 268537191}
-  - component: {fileID: 268537192}
-  - component: {fileID: 268537196}
   - component: {fileID: 268537195}
-  - component: {fileID: 268537197}
+  - component: {fileID: 268537196}
   - component: {fileID: 268537198}
+  - component: {fileID: 268537192}
+  - component: {fileID: 268537197}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -741,7 +741,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _torch: {fileID: 1036992905}
-  maxBatteryHealth: 8.3
+  maxBatteryHealth: 60
+  torchOnDecayMultiplier: 2
+  torchOffDecayMultiplier: 1
 --- !u!1001 &270841759
 PrefabInstance:
   m_ObjectHideFlags: 0
