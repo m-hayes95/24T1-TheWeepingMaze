@@ -833,7 +833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  rotateSpeed: 10
+  rotateSpeed: 100
   playerVertOffset: 1
   maxHp: 5
 --- !u!54 &268537197

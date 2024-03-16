@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
         return playerInput.Player.Move.ReadValue<Vector2>();
     }
 
-    public Vector2 GetMousePositionVector()
+    public Vector2 GetMousePositionVectorDelta()
     {
         return playerInput.Player.Rotate.ReadValue<Vector2>();
     }
