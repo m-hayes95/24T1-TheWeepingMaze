@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] [Range(0f, 1000)] private float gameTimer;
-    private void Update()
+    private void OnEnable()
     {
-        if (gameTimer > 0) gameTimer -= Time.deltaTime;
-
-        if (gameTimer < 0) GameOver();
-    } 
-
+        Torch.OnBatteryZero += GameOver;
+    }
+    private void OnDisable()
+    {
+        Torch.OnBatteryZero -= GameOver;
+    }
     private void GameOver()
     {
         Debug.Log("Game is over");
     }
 
-    public float GetCurrentGameTime()
-    {
-        return gameTimer;
-    }
+    
 }

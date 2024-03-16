@@ -27,7 +27,6 @@ public class EndGoal : MonoBehaviour
 
     private void GameWin()
     {
-        Debug.Log($"Player wins the game with {FindObjectOfType<GameManager>().GetCurrentGameTime()}(s) left!");
         SceneManager.LoadScene(0);
     }
 }

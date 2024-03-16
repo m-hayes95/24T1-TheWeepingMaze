@@ -5,24 +5,14 @@ public class Player : MonoBehaviour
     [SerializeField, Range(0f,20f)] float speed;
     [SerializeField, Range(0f,100f)] float rotateSpeed;
     [SerializeField, Range(0f,1f)] float playerVertOffset;
-    [SerializeField, Range(0, 5)] private int maxHp;
     
     private PlayerController controller;
-    private int hp;
     private Animation walkingAnim;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
         walkingAnim = GetComponentInChildren<Animation>();
-    }
-    private void Start()
-    {
-        hp = maxHp;
-    }
-    public int GetPlayerHp()
-    {
-        return hp;
     }
 
     private void Update()
@@ -51,10 +41,7 @@ public class Player : MonoBehaviour
         controller.enabled = true;
     }
 
-    public void TakeDamage(int damage)
-    {
-        hp -= damage;
-    }
+    
     private void PlayerMovement()
     {
         Vector2 inputVector = controller.GetMoveVectorNormalized();

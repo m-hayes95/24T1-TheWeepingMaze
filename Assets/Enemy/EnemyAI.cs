@@ -16,12 +16,15 @@ public class EnemyAI : MonoBehaviour
     private float freezeTimer;
     [SerializeField, Range(0f, 10f), Tooltip("Set the enemy attack cooldown.")]
     private float attackResetTime = 3f;
+    [SerializeField, Range(0f, 10f), Tooltip("Set how much damage the torch's battery health will take on each attack.")]
+    private float damageToTorch = 10f;
 
     private enum EnemySM { Idle, Chase, Freeze, Attack, AttackCooldown };
     [SerializeField] private EnemySM enemySM; // Change TO DO
     private NavMeshAgent agent;
     private Player player;
     private Torch torch;
+    private GameManager gameManager;
     private float distanceFromPlayer;
     private bool isTimerOn = false; // Do timer once
     private bool canAttack = true;
@@ -38,6 +41,7 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>();
         torch = FindObjectOfType<Torch>();
+        gameManager = FindObjectOfType<GameManager>();
         enemySM = EnemySM.Idle;
     }
     private void Update()
@@ -137,8 +141,7 @@ public class EnemyAI : MonoBehaviour
 
         if (!isAttackTimerOn)
         {
-            int damageDealt = 1;
-            player.TakeDamage(damageDealt);
+            torch.TakeDamage(damageToTorch);
         }
     }
 
