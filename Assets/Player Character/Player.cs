@@ -9,10 +9,12 @@ public class Player : MonoBehaviour
     
     private PlayerController controller;
     private int hp;
+    private Animation walkingAnim;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
+        walkingAnim = GetComponentInChildren<Animation>();
     }
     private void Start()
     {
@@ -25,7 +27,14 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        
+        if (walkingAnim != null)
+        {
+            Animate();
+        } 
+        else
+        {
+            Debug.LogWarning("Player walking animation is NULL, add reference");
+        }
     }
 
     private void FixedUpdate()
@@ -65,6 +74,19 @@ public class Player : MonoBehaviour
 
         // Smoothly rotate the player towards the current mouse position
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+    }
+
+    private void Animate()
+    {
+        // Only animate when the player is moving, else return the animation back to its inital point
+        if (controller.GetMoveVectorNormalized() != Vector2.zero)
+        {
+            walkingAnim.Play();
+        }
+        else
+        {
+            walkingAnim.Rewind();
+        }
     }
 
     /* This rotation moves left and right when moving the mouse across the screen

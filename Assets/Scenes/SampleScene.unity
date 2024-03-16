@@ -828,7 +828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385bef1bba0a40743bb0fef6f154f191, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.8
+  speed: 2
   rotateSpeed: 10
   playerVertOffset: 1
   maxHp: 5
@@ -3123,15 +3123,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1586204996359812145, guid: b4bd88fde438d174dbc0285960e98124, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00000017881
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 1586204996359812145, guid: b4bd88fde438d174dbc0285960e98124, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.12
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 1586204996359812145, guid: b4bd88fde438d174dbc0285960e98124, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.099
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1586204996359812145, guid: b4bd88fde438d174dbc0285960e98124, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5643,7 +5643,7 @@ Animation:
   m_Animations:
   - {fileID: 7400000, guid: 81b1ab7f2bd1e9a4a9a5024853a93517, type: 2}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
 --- !u!1001 &1511656995
