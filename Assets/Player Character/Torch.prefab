@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1928804557897584659}
   - component: {fileID: 8947694821244377918}
   - component: {fileID: 5462568032041800332}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Torch Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1985,7 +1985,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 444
+  m_VersionIndex: 450
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2005,7 +2005,7 @@ GameObject:
   - component: {fileID: 4410568155408733321}
   - component: {fileID: 2412628301955361107}
   - component: {fileID: 7447613076007457052}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider + Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2021,8 +2021,8 @@ Transform:
   m_GameObject: {fileID: 3135628904699394148}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 37.76, y: 0.29928, z: 27.2}
-  m_LocalScale: {x: 16.527212, y: 2.0135, z: 0.08990749}
+  m_LocalPosition: {x: 33.843, y: 0.29928, z: 27.2}
+  m_LocalScale: {x: 14.813541, y: 2.0135, z: 0.08990749}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1586204996359812145}
@@ -2147,60 +2147,60 @@ MonoBehaviour:
   - m_Vertices: 080000000a00000010000000
   m_SharedTextures: []
   m_Positions:
-  - {x: -1.3467871, y: 3.626824, z: 0.000019624988}
-  - {x: -3.2250788, y: 3.626824, z: 0.000019624988}
+  - {x: -1.3467875, y: 7.533396, z: 0.000010982811}
+  - {x: -3.2250788, y: 7.533396, z: 0.000010982811}
   - {x: -2.2859318, y: 13.607355, z: -0.000000627758}
-  - {x: -3.2250788, y: 3.626824, z: 0.000019624988}
-  - {x: -3.1803334, y: 3.626823, z: -5.6094007}
+  - {x: -3.2250788, y: 7.533396, z: 0.000010982811}
+  - {x: -3.1803331, y: 7.533395, z: -5.6094117}
   - {x: -2.2859318, y: 13.607355, z: -0.000000627758}
   - {x: -2.285932, y: 13.607351, z: -5.6093864}
-  - {x: -3.1803334, y: 3.626823, z: -5.6094007}
-  - {x: -1.3915333, y: 3.626823, z: -5.6094007}
+  - {x: -3.1803331, y: 7.533395, z: -5.6094117}
+  - {x: -1.3915336, y: 7.533395, z: -5.6094117}
   - {x: -2.285932, y: 13.607351, z: -5.6093864}
-  - {x: -1.3915333, y: 3.626823, z: -5.6094007}
-  - {x: -1.3467871, y: 3.626824, z: 0.000019624988}
+  - {x: -1.3915336, y: 7.533395, z: -5.6094117}
+  - {x: -1.3467875, y: 7.533396, z: 0.000010982811}
   - {x: -2.285932, y: 13.607351, z: -5.6093864}
   - {x: -2.2859318, y: 13.607355, z: -0.000000627758}
-  - {x: -1.3467871, y: 3.626824, z: 0.000019624988}
-  - {x: -3.2250788, y: 3.626824, z: 0.000019624988}
-  - {x: -1.3915333, y: 3.626823, z: -5.6094007}
-  - {x: -3.1803334, y: 3.626823, z: -5.6094007}
+  - {x: -1.3467875, y: 7.533396, z: 0.000010982811}
+  - {x: -3.2250788, y: 7.533396, z: 0.000010982811}
+  - {x: -1.3915336, y: 7.533395, z: -5.6094117}
+  - {x: -3.1803331, y: 7.533395, z: -5.6094117}
   m_Textures0:
-  - {x: 1.3467871, y: 3.626824}
-  - {x: 3.2250788, y: 3.626824}
+  - {x: 1.3467875, y: 7.533396}
+  - {x: 3.2250788, y: 7.533396}
   - {x: 2.2859318, y: 13.607355}
-  - {x: -0.02574474, y: 3.308755}
-  - {x: 5.583854, y: 3.308754}
-  - {x: -0.018233301, y: 13.333372}
-  - {x: 5.5909743, y: 13.329177}
-  - {x: -3.1803334, y: 3.6268148}
-  - {x: -1.3915333, y: 3.6268148}
-  - {x: -2.285932, y: 13.607344}
-  - {x: -5.620322, y: 3.7325501}
-  - {x: -0.0107233105, y: 3.732551}
-  - {x: -5.6274424, y: 13.753072}
-  - {x: -0.01823485, y: 13.757069}
-  - {x: 1.3467871, y: 0.000020241594}
-  - {x: 3.2250788, y: 0.000020241594}
-  - {x: 1.3915333, y: -5.6094003}
-  - {x: 3.1803334, y: -5.6094003}
+  - {x: -0.025736311, y: 6.9521646}
+  - {x: 5.583865, y: 6.9521637}
+  - {x: -0.018233454, y: 13.098295}
+  - {x: 5.5909743, y: 13.0914545}
+  - {x: -3.1803331, y: 7.5333714}
+  - {x: -1.3915336, y: 7.5333714}
+  - {x: -2.285932, y: 13.607328}
+  - {x: -5.620333, y: 7.6492195}
+  - {x: -0.010731986, y: 7.6492205}
+  - {x: -5.6274424, y: 13.78867}
+  - {x: -0.018234903, y: 13.795192}
+  - {x: 1.3467875, y: 0.000012263586}
+  - {x: 3.2250788, y: 0.000012263586}
+  - {x: 1.3915336, y: -5.6094103}
+  - {x: 3.1803331, y: -5.6094103}
   m_Textures2: []
   m_Textures3: []
   m_Tangents:
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
-  - {x: 0.007976602, y: 0.00000016925993, z: -0.99996823, w: -1}
-  - {x: 0.0040217075, y: 0.00037220283, z: -0.99999183, w: -1}
-  - {x: 0.0040217075, y: 0.00037220283, z: -0.99999183, w: -1}
-  - {x: 0.00006671269, y: 0.0007442339, z: -0.99999976, w: -1}
+  - {x: 0.007976652, y: -0.0000000021386253, z: -0.99996823, w: -1}
+  - {x: 0.004077218, y: 0.00060292217, z: -0.99999154, w: -1}
+  - {x: 0.004077218, y: 0.00060292217, z: -0.99999154, w: -1}
+  - {x: 0.00017762146, y: 0.0012058517, z: -0.9999993, w: -1}
   - {x: 1, y: 0, z: 0, w: -1}
   - {x: 1, y: 0, z: 0, w: -1}
   - {x: 1, y: 0, z: 0, w: -1}
-  - {x: 0.007976714, y: 8.312417e-11, z: 0.9999682, w: -1}
-  - {x: 0.004021806, y: -0.00035436184, z: 0.9999919, w: -1}
-  - {x: 0.004021806, y: -0.00035436184, z: 0.9999919, w: -1}
-  - {x: 0.0000667956, y: -0.0007087221, z: 0.99999976, w: -1}
+  - {x: 0.007976735, y: 0.0000000018135828, z: 0.9999682, w: -1}
+  - {x: 0.0040773074, y: -0.00057420635, z: 0.99999154, w: -1}
+  - {x: 0.0040773074, y: -0.00057420635, z: 0.99999154, w: -1}
+  - {x: 0.00017771446, y: -0.0011484216, z: 0.99999934, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
@@ -2214,11 +2214,19 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5969
+  m_VersionIndex: 6715
   m_IsSelectable: 1
-  m_SelectedFaces: 
-  m_SelectedEdges: []
-  m_SelectedVertices: 
+  m_SelectedFaces: 04000000
+  m_SelectedEdges:
+  - a: 14
+    b: 15
+  - a: 16
+    b: 14
+  - a: 15
+    b: 17
+  - a: 17
+    b: 16
+  m_SelectedVertices: 0e0000000f0000001000000011000000
 --- !u!114 &5579273636425399528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2329,7 +2337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1737483407918688184}
   - component: {fileID: 6114376938758572595}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -2345,7 +2353,7 @@ Transform:
   m_GameObject: {fileID: 3515651081069567299}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.81}
+  m_LocalPosition: {x: 0, y: -1.22, z: -0.678}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2363,7 +2371,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 0.88257074, b: 0.6367924, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 2.6
   m_Range: 21.561737
   m_SpotAngle: 60
   m_InnerSpotAngle: 6
@@ -2372,10 +2380,10 @@ Light:
     m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 0.503
-    m_Bias: 0.05
+    m_Strength: 0.523
+    m_Bias: 0.24
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -2400,12 +2408,12 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 39
+    m_Bits: 55
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -2422,13 +2430,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1586204996359812145}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Torch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1586204996359812145
 Transform:
   m_ObjectHideFlags: 0
@@ -2439,7 +2447,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7265457, y: 1, z: 1}
+  m_LocalScale: {x: 0.8036455, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1737483407918688184}
@@ -2459,7 +2467,7 @@ GameObject:
   - component: {fileID: 4249606289823806315}
   - component: {fileID: 6870794323743323818}
   - component: {fileID: 4062492846090133044}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Torch Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
