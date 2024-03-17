@@ -86,7 +86,7 @@ public class Torch : MonoBehaviour
         {
             batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
         }
-
+        // Reduce the torch light intensity relaitve to the torch battery health
         light.intensity -= intensityDecrease * Time.deltaTime * (light.intensity / batteryHealth);
     }
 }
