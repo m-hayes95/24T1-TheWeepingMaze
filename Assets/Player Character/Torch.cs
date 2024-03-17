@@ -19,6 +19,7 @@ public class Torch : MonoBehaviour
     private float intensityDecrease = .5f;
 
     private new Light light;
+    private Player player;
     private float initalLightIntensity;
     private float batteryHealth;
     private bool isTorchOn;
@@ -33,6 +34,7 @@ public class Torch : MonoBehaviour
         isTorchOn = false;
         batteryHealth = maxBatteryHealth;
         light = _torch.GetComponentInChildren<Light>();
+        player = GetComponent<Player>();
         initalLightIntensity = light.intensity; // Store the original value
     }
 
@@ -54,7 +56,6 @@ public class Torch : MonoBehaviour
                 OnBatteryZero();
             }
         }
-        
     }
 
     public void ToggleTorch()

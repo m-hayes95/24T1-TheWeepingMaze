@@ -1,18 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class Player : MonoBehaviour
 {
-    [SerializeField, Range(0f,20f)] float speed;
-    [SerializeField, Range(0f,100f)] float rotateSpeed;
-    [SerializeField, Range(0f,1f)] float playerVertOffset;
-    
+    [SerializeField, Range(0f,20f), Tooltip("Set the speed of the player.")] 
+    private float speed;
+    [SerializeField, Range(0f,100f), Tooltip("Set the roate speed of the player.")]
+    private float rotateSpeed;
+    [SerializeField, Range(0f,1f), Tooltip("Set a verticle offset the player will spawn above the ground.")] 
+    private float playerVertOffset;
+    [SerializeField, Range(0f,3f), Tooltip("Set the value of the camera shake intensity when hit.")] 
+    private float cameraShakeIntensity = 1f;
+    [SerializeField, Range(0f, 5f), Tooltip("Set the multipler of the knockback force.")] 
+    private int knockbackForceMultipler = 4;
+    [SerializeField]
+    private List<GameObject> playerBody = new List<GameObject>();
+
     private PlayerController controller;
     private Animation walkingAnim;
+    private Rigidbody rb;
+    private Torch torch;
+
+    private Color hitColor = Color.red;
+    private List<Color> initialColors = new List<Color>();
+    
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
+        rb = GetComponent<Rigidbody>();
+        torch = GetComponent<Torch>();  
         walkingAnim = GetComponentInChildren<Animation>();
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < playerBody.Count; i++)
+        {
+            Renderer renderer = playerBody[i].GetComponent<Renderer>();
+            Color originalColor = renderer.material.color;
+            initialColors.Add(originalColor);
+        }
     }
 
     private void Update()
@@ -34,7 +64,6 @@ public class Player : MonoBehaviour
             PlayerMovement();
             RotatePlayerMousePosDelta();
         }
-        
     }
 
     public void FindStartPosition(Vector3 position)
@@ -44,17 +73,61 @@ public class Player : MonoBehaviour
         transform.position = position + offsetZ;
         controller.enabled = true;
         gameObject.SetActive(true);
+        ResetPlayerColor();
+        //Debug.Log("Player reset");
     }
 
-    public void PlayerHit() // Called from enemy
+    public void PlayerHit(Vector3 enemyPosition)
     {
-        // Add knockback
+        // Add knockback opposite from enemy position
+        Vector3 knockbackDirection = (transform.position - enemyPosition).normalized;
+        ApplyKnockback(knockbackDirection);
+
         // Add hit sound
-        // Add Screenshake
-        // Add red material??
+        ApplyHitMaterial();    
+
+        // Screenshake
+        float shakeTimer = 0.1f;
+        CameraShake.Instance.PlayCameraShake(cameraShakeIntensity, shakeTimer);
     }
 
-    
+    private void ApplyHitMaterial()
+    {
+        float timer = .5f;
+        for (int i = 0; i < playerBody.Count; i++)
+        {
+            Renderer renderer = playerBody[i].GetComponent<Renderer>();
+            Color originalColor = renderer.material.color;
+            StartCoroutine(ChangeColourTimer(timer, originalColor, renderer));
+        }
+    }
+    private IEnumerator ChangeColourTimer(float timer, Color originalColor, Renderer renderer)
+    {
+        renderer.material.color = hitColor;
+        yield return new WaitForSeconds(timer);
+        renderer.material.color = originalColor;
+        Debug.Log("Change Colour on hit");
+    }
+    private void ResetPlayerColor()
+    {
+        for (int i = 0; i < playerBody.Count; i++)
+        {
+            if (i < initialColors.Count)
+            {
+                Renderer renderer = playerBody[i].GetComponent<Renderer>();
+                renderer.material.color = initialColors[i];
+            } 
+            else
+            {
+                Debug.LogWarning($"Index out of range. Intial Colours contains {initialColors.Count} elements.");
+            }
+        }
+    }
+    private void ApplyKnockback(Vector3 direction)
+    {
+        rb.velocity = Vector3.zero; // Reset velocity to prevent inconsitent events
+        rb.AddForce(direction * knockbackForceMultipler, ForceMode.Impulse);
+    }
     private void PlayerMovement()
     {
         Vector2 inputVector = controller.GetMoveVectorNormalized();
@@ -81,9 +154,6 @@ public class Player : MonoBehaviour
             walkingAnim.Rewind();
         }
     }
-
-
-
     // This rotation moves left and right when moving the mouse across the screen
     private void RotatePlayerMousePosDelta()
     {
