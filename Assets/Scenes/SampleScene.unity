@@ -823,7 +823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _torch: {fileID: 1036992905}
-  maxBatteryHealth: 35.9
+  maxBatteryHealth: 60
   torchOnDecayMultiplier: 2
   torchOffDecayMultiplier: 1
   intensityDecrease: 0.5
