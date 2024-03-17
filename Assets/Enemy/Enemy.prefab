@@ -1398,8 +1398,9 @@ GameObject:
   m_Component:
   - component: {fileID: 211094257282948930}
   - component: {fileID: 2804773994718215091}
-  - component: {fileID: 3929591826957554622}
+  - component: {fileID: 51572043618183915}
   - component: {fileID: 6973676939175382524}
+  - component: {fileID: 3929591826957554622}
   - component: {fileID: 7873866371856285803}
   - component: {fileID: 4381218214270675332}
   - component: {fileID: 525751238946801792}
@@ -1449,6 +1450,31 @@ MonoBehaviour:
   rightEye: {fileID: 6789342558937976016}
   attackEyeMaterial: {fileID: 2100000, guid: cc1cd7c51679f484aaa06c2822724360, type: 2}
   originalEyeMaterial: {fileID: 2100000, guid: 8c50548b811f3fa4982f91efcaed8aa8, type: 2}
+--- !u!114 &51572043618183915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763802120514677541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bbc058f1b52c0d40b3d6b21cd5220de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6973676939175382524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763802120514677541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec51fc46de473454090fc36d2b4a9225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yOffset: 0.3
 --- !u!195 &3929591826957554622
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1471,19 +1497,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6973676939175382524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 763802120514677541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec51fc46de473454090fc36d2b4a9225, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yOffset: 0.3
 --- !u!136 &7873866371856285803
 CapsuleCollider:
   m_ObjectHideFlags: 0

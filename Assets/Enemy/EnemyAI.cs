@@ -28,11 +28,13 @@ public class EnemyAI : MonoBehaviour
     private Player player;
     private Torch torch;
     private GameManager gameManager;
+    private EnemyAnimation animation;
     private float distanceFromPlayer;
     private bool isTimerOn = false; // Do timer once
     private bool canAttack = true;
     private bool isAttackTimerOn = false;
-    private bool isEnemyInLight = false; 
+    private bool isEnemyInLight = false;
+    private bool isInChaseAnimation = false;
     public bool IsEnemyInLight
     {
         get { return isEnemyInLight; }
@@ -42,6 +44,7 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animation = GetComponent<EnemyAnimation>();
         player = FindObjectOfType<Player>();
         torch = FindObjectOfType<Torch>();
         gameManager = FindObjectOfType<GameManager>();
@@ -69,6 +72,12 @@ public class EnemyAI : MonoBehaviour
                 case EnemySM.Idle:
                     agent.speed = 0f;
                     ResetEyeColor();
+
+                    if (isInChaseAnimation)
+                    {
+                        animation.PlayEndChaseAnimation();
+                        AnimationPlayed();
+                    }
                     if (distanceFromPlayer <= distanceFromPlayerChaseThreshold)
                     {
                         enemySM = EnemySM.Chase;
@@ -79,6 +88,11 @@ public class EnemyAI : MonoBehaviour
                     agent.speed = chaseSpeed;
                     ChangeEyeColor();
 
+                    if (!isInChaseAnimation)
+                    {
+                        animation.PlayStartChaseAnimation();
+                        AnimationPlayed();
+                    }
                     if (agent.isOnNavMesh)
                     {
                         Chase();
@@ -102,6 +116,12 @@ public class EnemyAI : MonoBehaviour
                 case EnemySM.Freeze:
                     agent.speed = 0f;
                     ResetEyeColor();
+
+                    if (isInChaseAnimation)
+                    {
+                        animation.PlayEndChaseAnimation();
+                        AnimationPlayed();
+                    }
                     if (torch.IsTorchOn)
                     {
                         if (!isTimerOn)
@@ -115,9 +135,13 @@ public class EnemyAI : MonoBehaviour
                     agent.speed = 0f;
                     ChangeEyeColor();
 
+                   
+
                     if (agent.isOnNavMesh && canAttack)
                     {
                         Attack();
+                        animation.PlayAttackAnimation();
+                        AnimationPlayed();
                         enemySM = EnemySM.AttackCooldown;
                     }
                     else
@@ -130,11 +154,11 @@ public class EnemyAI : MonoBehaviour
                 case EnemySM.AttackCooldown:
                     agent.speed = 0f;
                     ResetEyeColor();
+
                     if (!isAttackTimerOn)
                     {
                         StartCoroutine(AttackResetTimer(attackResetTime));
                     }
-
                     break;
 
                 default:
@@ -146,6 +170,11 @@ public class EnemyAI : MonoBehaviour
     public void FreezeEnemy()
     {
         enemySM = EnemySM.Freeze;
+    }
+
+    private void AnimationPlayed()
+    {
+        isInChaseAnimation = !isInChaseAnimation;
     }
     private void ChangeEyeColor()
     {
