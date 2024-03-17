@@ -59,74 +59,79 @@ public class EnemyAI : MonoBehaviour
         }
         //Debug.Log($" Distance: {distanceFromPlayer} Attack at: {distanceFromPlayerAttackThreshold}");
 
-        switch (enemySM)
+        if (GameManager.isGameRunning)
         {
-            case EnemySM.Idle:
-                agent.speed = 0f;
-                if (distanceFromPlayer <= distanceFromPlayerChaseThreshold)
-                {
-                    enemySM = EnemySM.Chase;
-                }
-                break;
-
-            case EnemySM.Chase:
-                agent.speed = chaseSpeed;
-                if (agent.isOnNavMesh)
-                {
-                    Chase();
-                }
-                else
-                {
-                    Debug.LogWarning($"{gameObject.name} is not on nav mesh. Failed Chase state. Current state = {enemySM}");
-                    enemySM = EnemySM.Idle;
-                }
-                if (distanceFromPlayer >= distanceFromPlayerChaseThreshold)
-                {
-                    enemySM = EnemySM.Idle;
-                } 
-                else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold 
-                    && canAttack)
-                {
-                    enemySM = EnemySM.Attack;
-                }
-                break;
-
-            case EnemySM.Freeze:
-                agent.speed = 0f;
-                if (torch.IsTorchOn)
-                {
-                    if (!isTimerOn)
+            switch (enemySM)
+            {
+                case EnemySM.Idle:
+                    agent.speed = 0f;
+                    if (distanceFromPlayer <= distanceFromPlayerChaseThreshold)
                     {
-                        StartCoroutine(FreezeEnemyTimer());
+                        enemySM = EnemySM.Chase;
                     }
-                }
-                break;
+                    break;
 
-            case EnemySM.Attack:
-                agent.speed = 0f;
-                if (agent.isOnNavMesh && canAttack)
-                {
-                    Attack();
-                    enemySM = EnemySM.AttackCooldown;
-                } else
-                {
-                    Debug.LogWarning($"{gameObject.name}  Failed to attack Player. Current state = {enemySM}");
-                    enemySM = EnemySM.AttackCooldown;
-                }
-                break;
+                case EnemySM.Chase:
+                    agent.speed = chaseSpeed;
+                    if (agent.isOnNavMesh)
+                    {
+                        Chase();
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{gameObject.name} is not on nav mesh. Failed Chase state. Current state = {enemySM}");
+                        enemySM = EnemySM.Idle;
+                    }
+                    if (distanceFromPlayer >= distanceFromPlayerChaseThreshold)
+                    {
+                        enemySM = EnemySM.Idle;
+                    }
+                    else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold
+                        && canAttack)
+                    {
+                        enemySM = EnemySM.Attack;
+                    }
+                    break;
 
-            case EnemySM.AttackCooldown:
-                agent.speed = 0f;
-                if (!isAttackTimerOn) 
-                {
-                    StartCoroutine(AttackResetTimer(attackResetTime));
-                }
-                
-                break;
+                case EnemySM.Freeze:
+                    agent.speed = 0f;
+                    if (torch.IsTorchOn)
+                    {
+                        if (!isTimerOn)
+                        {
+                            StartCoroutine(FreezeEnemyTimer());
+                        }
+                    }
+                    break;
 
-            default:
-                break;
+                case EnemySM.Attack:
+                    agent.speed = 0f;
+                    if (agent.isOnNavMesh && canAttack)
+                    {
+                        Attack();
+                        enemySM = EnemySM.AttackCooldown;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{gameObject.name}  Failed to attack Player. Current state = {enemySM}");
+                        enemySM = EnemySM.AttackCooldown;
+                    }
+                    break;
+
+                case EnemySM.AttackCooldown:
+                    agent.speed = 0f;
+                    if (!isAttackTimerOn)
+                    {
+                        StartCoroutine(AttackResetTimer(attackResetTime));
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
         }
+        
     }
 
     private void Chase()

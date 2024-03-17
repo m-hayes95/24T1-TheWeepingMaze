@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class StartMenu : MonoBehaviour
+public class Menu : MonoBehaviour
 {
     [SerializeField] private bool isGamePaused = false;
     [SerializeField] private GameObject menu;
@@ -16,13 +17,17 @@ public class StartMenu : MonoBehaviour
     {
         isGamePaused = true;
         menu.SetActive(true);
-        Time.timeScale = 0f;
+        GameManager.isGameRunning = false;
     }
     public void ResumeGame()
     {
         isGamePaused = false;
         menu.SetActive(false);
-        Time.timeScale = 1f;
+        GameManager.isGameRunning = true;
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
     }
     public void QuitGame()
     {

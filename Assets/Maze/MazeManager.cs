@@ -71,77 +71,11 @@ public class MazeManager : MonoBehaviour
         }
         visualisation.Visualise(maze, cellObjects, gameObject);
         BakeNewNavMesh();
+        GameManager.isGameRunning = true;
 
-        // Spawn player - /4 to make sure player spawns in bottom left area,
-        // by reducing the potential amount of size
-        if (seed != 0)
-        {
-            Random.InitState(seed);
-        }
-        player.FindStartPosition(maze.CoordinatesToWorldPosition(
-            int2(Random.Range(0, mazeSize.x / 4), Random.Range(0, mazeSize.y / 4))
-                )
-            );
-
-        // Spawn enemies at random locations throughout the maze
-        enemies = new List<EnemySpawner>();
-        for (int i = 0; i < numberOfEnemies; i++)
-        {
-            GameObject newEnemy = Instantiate(enemy);
-            if (enemy.GetComponent<EnemySpawner>())
-            {
-                newEnemy.SetActive(false);
-                enemies.Add(newEnemy.GetComponent<EnemySpawner>());
-                if (enemySpawnParent != null)
-                {
-                    newEnemy.transform.parent = enemySpawnParent.transform;
-                }
-                else
-                {
-                    Debug.LogWarning("Enemies not set to a parent under the hierachy, add a game object reference to the 'Enemy Spawn Parent' field under the Maze Manager script");
-                }       
-            }
-            else
-            {
-                Debug.LogError($"{enemy.gameObject.name} does not have an EnemySpawner attached!");
-                Destroy(newEnemy);
-            }
-        }
-
-        int2 halfsize = mazeSize / 2;
-
-        for (int i = 0; i < enemies.Count; i++) 
-        {
-            // Make sure enemies spawn away from the player,
-            // by adding half the maze size to there spawn pos, if it is under half size
-            var coordinates = int2(Random.Range(0, mazeSize.x), Random.Range(0, mazeSize.y));
-            if (coordinates.x < halfsize.x && coordinates.y < halfsize.y)
-            {
-                if (Random.value < 0.5f)
-                {
-                    coordinates.x += halfsize.x;
-                }
-                else
-                {
-                    coordinates.y += halfsize.y;
-                }
-            }
-            enemies[i].SpawnEnemies(maze, coordinates);
-        }
-
-        // Spawn End Goal
-        minGoalSpawnArea.x = Mathf.Clamp(minGoalSpawnArea.x, 0, mazeSize.x);
-        minGoalSpawnArea.y = Mathf.Clamp(minGoalSpawnArea.y, 0, mazeSize.y);
-        // Need to -1 from max size or it will spawn outside the maze
-        var maxSize = int2(mazeSize.x - 1, mazeSize.y - 1);
-        var coordinatesGoal = int2(
-            Random.Range(maxSize.x - minGoalSpawnArea.x, maxSize.x), 
-            Random.Range(maxSize.y - minGoalSpawnArea.y, maxSize.y)
-        );
-        //Debug.Log($" Coodinates for goal: {coordinatesGoal}");
-        goal.FindPositionAndSpawn(maze, coordinatesGoal);
-
-        
+        SpawnPlayer();
+        SpawnEnemies();
+        SpawnEndGoal();
     }
 
     private void Update()
@@ -168,5 +102,83 @@ public class MazeManager : MonoBehaviour
     private void BakeNewNavMesh()
     {
         GetComponent<NavMeshSurface>().BuildNavMesh();
+    }
+
+    private void SpawnPlayer()
+    {
+        // Spawn player - /4 to make sure player spawns in bottom left area,
+        // by reducing the potential amount of size
+        if (seed != 0)
+        {
+            Random.InitState(seed);
+        }
+        player.FindStartPosition(maze.CoordinatesToWorldPosition(
+            int2(Random.Range(0, mazeSize.x / 4), Random.Range(0, mazeSize.y / 4))
+                )
+            );
+    }
+
+    private void SpawnEnemies()
+    {
+        // Spawn enemies at random locations throughout the maze
+        enemies = new List<EnemySpawner>();
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            GameObject newEnemy = Instantiate(enemy);
+            if (enemy.GetComponent<EnemySpawner>())
+            {
+                newEnemy.SetActive(false);
+                enemies.Add(newEnemy.GetComponent<EnemySpawner>());
+                if (enemySpawnParent != null)
+                {
+                    newEnemy.transform.parent = enemySpawnParent.transform;
+                }
+                else
+                {
+                    Debug.LogWarning("Enemies not set to a parent under the hierachy, add a game object reference to the 'Enemy Spawn Parent' field under the Maze Manager script");
+                }
+            }
+            else
+            {
+                Debug.LogError($"{enemy.gameObject.name} does not have an EnemySpawner attached!");
+                Destroy(newEnemy);
+            }
+        }
+
+        int2 halfsize = mazeSize / 2;
+
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            // Make sure enemies spawn away from the player,
+            // by adding half the maze size to there spawn pos, if it is under half size
+            var coordinates = int2(Random.Range(0, mazeSize.x), Random.Range(0, mazeSize.y));
+            if (coordinates.x < halfsize.x && coordinates.y < halfsize.y)
+            {
+                if (Random.value < 0.5f)
+                {
+                    coordinates.x += halfsize.x;
+                }
+                else
+                {
+                    coordinates.y += halfsize.y;
+                }
+            }
+            enemies[i].SpawnEnemies(maze, coordinates);
+        }
+    }
+
+    private void SpawnEndGoal()
+    {
+        // Spawn End Goal
+        minGoalSpawnArea.x = Mathf.Clamp(minGoalSpawnArea.x, 0, mazeSize.x);
+        minGoalSpawnArea.y = Mathf.Clamp(minGoalSpawnArea.y, 0, mazeSize.y);
+        // Need to -1 from max size or it will spawn outside the maze
+        var maxSize = int2(mazeSize.x - 1, mazeSize.y - 1);
+        var coordinatesGoal = int2(
+            Random.Range(maxSize.x - minGoalSpawnArea.x, maxSize.x),
+            Random.Range(maxSize.y - minGoalSpawnArea.y, maxSize.y)
+        );
+        //Debug.Log($" Coodinates for goal: {coordinatesGoal}");
+        goal.FindPositionAndSpawn(maze, coordinatesGoal);
     }
 }

@@ -29,8 +29,12 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PlayerMovement();
-        RotatePlayerMousePosDelta();
+        if (GameManager.isGameRunning)
+        {
+            PlayerMovement();
+            RotatePlayerMousePosDelta();
+        }
+        
     }
 
     public void FindStartPosition(Vector3 position)

@@ -34,26 +34,30 @@ public class Torch : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log($"Is torch on {isTorchOn} "); 
-        // Reduce the battery health over time, reduce by less if its switched off 
-        if (batteryHealth > 0)
+        if (GameManager.isGameRunning)
         {
-            if (IsTorchOn)
+            //Debug.Log($"Is torch on {isTorchOn} "); 
+            // Reduce the battery health over time, reduce by less if its switched off 
+            if (batteryHealth > 0)
             {
-                batteryHealth -= Time.deltaTime * torchOnDecayMultiplier;
+                if (IsTorchOn)
+                {
+                    batteryHealth -= Time.deltaTime * torchOnDecayMultiplier;
+                }
+                else
+                {
+                    batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
+                }
             }
-            else
-            {
-                batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
-            }
-        }
 
-        if (batteryHealth <= 0 && !doEventOnce)
-        {
-            // Game Over
-            OnBatteryZero();
-            doEventOnce = true;
+            if (batteryHealth <= 0 && !doEventOnce)
+            {
+                // Game Over
+                OnBatteryZero();
+                doEventOnce = true;
+            }
         }
+        
     }
     public void ToggleTorch()
     {
