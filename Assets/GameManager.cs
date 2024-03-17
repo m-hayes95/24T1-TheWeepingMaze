@@ -5,8 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static bool isGameRunning;
+    public static bool showDebugForIsGameRunningStatus = false; // So I can turn off all debugs that are letting me know they changed this variable
 
     [SerializeField] private GameObject endScreen;
+    private Player player;
 
     private void OnEnable()
     {
@@ -17,15 +19,22 @@ public class GameManager : MonoBehaviour
         Torch.OnBatteryZero -= GameOver;
     }
 
+    private void Start()
+    {
+        player = FindObjectOfType<Player>();
+    }
+
     private void Update()
     {
         Debug.Log($"Gameplay is running: {isGameRunning}");
     }
     private void GameOver()
     {
-        Debug.Log("Game is over");
         endScreen.SetActive(true);
+        player.gameObject.SetActive(false);
         isGameRunning = false;
+        if (showDebugForIsGameRunningStatus)
+            Debug.Log($"is game running set to {isGameRunning}");
     }
 
     

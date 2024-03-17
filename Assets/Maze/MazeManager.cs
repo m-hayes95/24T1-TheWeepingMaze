@@ -45,15 +45,33 @@ public class MazeManager : MonoBehaviour
     private MazeCellObject[] cellObjects;
     private Maze maze;
 
+    private void OnEnable()
+    {
+        Torch.OnBatteryZero += EndGame;
+    }
+    private void OnDisable()
+    {
+        Torch.OnBatteryZero -= EndGame;
+    }
 
     private void Awake()
+    {
+        BuildMaze();
+        //SpawnEnemies();
+    }
+    public void ReBuildMaze()
+    {
+        BuildMaze();
+        FindObjectOfType<Torch>().ResetTorchHealth();
+    }
+    private void BuildMaze()
     {
         // Build maze
         maze = new Maze(mazeSize);
 
-        new FindDiagonalPassagesJob 
-        { 
-            maze = maze  
+        new FindDiagonalPassagesJob
+        {
+            maze = maze
         }.ScheduleParallel(
             maze.Length, maze.SizeEW, new GenerateMazeJob
             {
@@ -69,25 +87,21 @@ public class MazeManager : MonoBehaviour
         {
             cellObjects = new MazeCellObject[maze.Length];
         }
+
         visualisation.Visualise(maze, cellObjects, gameObject);
         BakeNewNavMesh();
         GameManager.isGameRunning = true;
+        if (GameManager.showDebugForIsGameRunningStatus)
+            Debug.Log($"is game running set to {GameManager.isGameRunning}");
 
-        SpawnPlayer();
+        PlacePlayer();
         SpawnEnemies();
-        SpawnEndGoal();
+        PlaceEndGoal();
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            EndGame();
-        }
-    }
-
     private void EndGame()
     {
+        ClearCurrentNavMesh();
+
         for (int i = 0; i < cellObjects.Length; i++)
         {
             cellObjects[i].Recycle();
@@ -96,7 +110,10 @@ public class MazeManager : MonoBehaviour
         {
             Destroy(enemies[e].gameObject);
         }
-        Destroy(goal.gameObject);
+        goal.gameObject.SetActive(false);
+        Debug.Log($"Destroy all maze cells && enemies && end goal - Number of maze cells: {cellObjects.Length}, Number of enemies: {enemies.Count}");
+        
+        OnDestroy();
     }
 
     private void BakeNewNavMesh()
@@ -104,7 +121,12 @@ public class MazeManager : MonoBehaviour
         GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 
-    private void SpawnPlayer()
+    private void ClearCurrentNavMesh()
+    {
+        GetComponent<NavMeshSurface>().RemoveData();
+    }
+
+    private void PlacePlayer()
     {
         // Spawn player - /4 to make sure player spawns in bottom left area,
         // by reducing the potential amount of size
@@ -165,9 +187,16 @@ public class MazeManager : MonoBehaviour
             }
             enemies[i].SpawnEnemies(maze, coordinates);
         }
+
+
     }
 
-    private void SpawnEndGoal()
+    private void PlaceEnemies()
+    {
+        
+    }
+
+    private void PlaceEndGoal()
     {
         // Spawn End Goal
         minGoalSpawnArea.x = Mathf.Clamp(minGoalSpawnArea.x, 0, mazeSize.x);
@@ -179,6 +208,11 @@ public class MazeManager : MonoBehaviour
             Random.Range(maxSize.y - minGoalSpawnArea.y, maxSize.y)
         );
         //Debug.Log($" Coodinates for goal: {coordinatesGoal}");
-        goal.FindPositionAndSpawn(maze, coordinatesGoal);
+        goal.RePosition(maze, coordinatesGoal);
+    }
+
+    private void OnDestroy()
+    {
+        maze.Dispose();
     }
 }

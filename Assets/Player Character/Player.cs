@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
         controller.enabled = false;
         transform.position = position + offsetZ;
         controller.enabled = true;
+        gameObject.SetActive(true);
     }
 
     public void PlayerHit() // Called from enemy

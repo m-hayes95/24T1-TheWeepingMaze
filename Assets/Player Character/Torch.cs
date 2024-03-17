@@ -50,11 +50,10 @@ public class Torch : MonoBehaviour
                 }
             }
 
-            if (batteryHealth <= 0 && !doEventOnce)
+            if (batteryHealth <= 0)
             {
                 // Game Over
                 OnBatteryZero();
-                doEventOnce = true;
             }
         }
         
@@ -68,6 +67,11 @@ public class Torch : MonoBehaviour
     public void TakeDamage(float damage)
     {
         batteryHealth -= damage;
+    }
+
+    public void ResetTorchHealth()
+    {
+        batteryHealth = maxBatteryHealth;
     }
 
     private void ReduceLightInstensity()
