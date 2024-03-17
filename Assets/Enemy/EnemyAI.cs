@@ -21,15 +21,20 @@ public class EnemyAI : MonoBehaviour
 
     private enum EnemySM { Idle, Chase, Freeze, Attack, AttackCooldown };
     [SerializeField] private EnemySM enemySM; // Change TO DO
+    [SerializeField] private Renderer leftEye, rightEye;
+    [SerializeField] private Material attackEyeMaterial, originalEyeMaterial;
+
     private NavMeshAgent agent;
     private Player player;
     private Torch torch;
     private GameManager gameManager;
+    private EnemyAnimation animation;
     private float distanceFromPlayer;
     private bool isTimerOn = false; // Do timer once
     private bool canAttack = true;
     private bool isAttackTimerOn = false;
-    private bool isEnemyInLight = false; 
+    private bool isEnemyInLight = false;
+    private bool isInChaseAnimation = false;
     public bool IsEnemyInLight
     {
         get { return isEnemyInLight; }
@@ -39,6 +44,7 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animation = GetComponent<EnemyAnimation>();
         player = FindObjectOfType<Player>();
         torch = FindObjectOfType<Torch>();
         gameManager = FindObjectOfType<GameManager>();
@@ -65,6 +71,13 @@ public class EnemyAI : MonoBehaviour
             {
                 case EnemySM.Idle:
                     agent.speed = 0f;
+                    ResetEyeColor();
+
+                    if (isInChaseAnimation)
+                    {
+                        animation.PlayEndChaseAnimation();
+                        AnimationPlayed();
+                    }
                     if (distanceFromPlayer <= distanceFromPlayerChaseThreshold)
                     {
                         enemySM = EnemySM.Chase;
@@ -73,6 +86,13 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.Chase:
                     agent.speed = chaseSpeed;
+                    ChangeEyeColor();
+
+                    if (!isInChaseAnimation)
+                    {
+                        animation.PlayStartChaseAnimation();
+                        AnimationPlayed();
+                    }
                     if (agent.isOnNavMesh)
                     {
                         Chase();
@@ -95,6 +115,13 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.Freeze:
                     agent.speed = 0f;
+                    ResetEyeColor();
+
+                    if (isInChaseAnimation)
+                    {
+                        animation.PlayEndChaseAnimation();
+                        AnimationPlayed();
+                    }
                     if (torch.IsTorchOn)
                     {
                         if (!isTimerOn)
@@ -106,9 +133,15 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.Attack:
                     agent.speed = 0f;
+                    ChangeEyeColor();
+
+                   
+
                     if (agent.isOnNavMesh && canAttack)
                     {
                         Attack();
+                        animation.PlayAttackAnimation();
+                        AnimationPlayed();
                         enemySM = EnemySM.AttackCooldown;
                     }
                     else
@@ -120,11 +153,12 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.AttackCooldown:
                     agent.speed = 0f;
+                    ResetEyeColor();
+
                     if (!isAttackTimerOn)
                     {
                         StartCoroutine(AttackResetTimer(attackResetTime));
                     }
-
                     break;
 
                 default:
@@ -138,6 +172,20 @@ public class EnemyAI : MonoBehaviour
         enemySM = EnemySM.Freeze;
     }
 
+    private void AnimationPlayed()
+    {
+        isInChaseAnimation = !isInChaseAnimation;
+    }
+    private void ChangeEyeColor()
+    {
+        leftEye.material = attackEyeMaterial;
+        rightEye.material = attackEyeMaterial;
+    }
+    private void ResetEyeColor()
+    {
+        leftEye.material = originalEyeMaterial;
+        rightEye.material = originalEyeMaterial;
+    }
     private void Chase()
     {
         //Debug.Log("Moving");
