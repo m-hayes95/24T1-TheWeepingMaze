@@ -60,8 +60,15 @@ public class Player : MonoBehaviour
         Vector2 inputVector = controller.GetMoveVectorNormalized();
         Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
         transform.position += moveDirection * speed * Time.deltaTime;
+        RotatePlayerToFoward(moveDirection);
     }
-
+    private void RotatePlayerToFoward(Vector3 moveDirection)
+    {
+        // Rotate the player to the current forward position
+        float rotateForwardSpeed = 10f;
+        transform.forward = Vector3.Slerp(transform.forward, moveDirection,
+            rotateForwardSpeed * Time.deltaTime);
+    }
     private void Animate()
     {
         // Only animate when the player is moving, else return the animation back to its inital point
@@ -76,6 +83,7 @@ public class Player : MonoBehaviour
     }
 
 
+
     // This rotation moves left and right when moving the mouse across the screen
     private void RotatePlayerMousePosDelta()
     {
@@ -86,6 +94,8 @@ public class Player : MonoBehaviour
         transform.Rotate(Vector3.up * smoothMouseX);
         transform.Rotate(Vector3.down * smoothMouseY);
     }
+
+    
 
     /*
     private void RotateToMousePosition()
