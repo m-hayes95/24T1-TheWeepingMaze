@@ -1443,6 +1443,10 @@ MonoBehaviour:
   attackResetTime: 3
   damageToTorch: 10
   enemySM: 0
+  leftEye: {fileID: 6798691537117981498}
+  rightEye: {fileID: 6789342558937976016}
+  attackEyeMaterial: {fileID: 2100000, guid: cc1cd7c51679f484aaa06c2822724360, type: 2}
+  originalEyeMaterial: {fileID: 2100000, guid: 8c50548b811f3fa4982f91efcaed8aa8, type: 2}
 --- !u!195 &3929591826957554622
 NavMeshAgent:
   m_ObjectHideFlags: 0

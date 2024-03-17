@@ -21,6 +21,9 @@ public class EnemyAI : MonoBehaviour
 
     private enum EnemySM { Idle, Chase, Freeze, Attack, AttackCooldown };
     [SerializeField] private EnemySM enemySM; // Change TO DO
+    [SerializeField] private Renderer leftEye, rightEye;
+    [SerializeField] private Material attackEyeMaterial, originalEyeMaterial;
+
     private NavMeshAgent agent;
     private Player player;
     private Torch torch;
@@ -65,6 +68,7 @@ public class EnemyAI : MonoBehaviour
             {
                 case EnemySM.Idle:
                     agent.speed = 0f;
+                    ResetEyeColor();
                     if (distanceFromPlayer <= distanceFromPlayerChaseThreshold)
                     {
                         enemySM = EnemySM.Chase;
@@ -73,6 +77,8 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.Chase:
                     agent.speed = chaseSpeed;
+                    ChangeEyeColor();
+
                     if (agent.isOnNavMesh)
                     {
                         Chase();
@@ -95,6 +101,7 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.Freeze:
                     agent.speed = 0f;
+                    ResetEyeColor();
                     if (torch.IsTorchOn)
                     {
                         if (!isTimerOn)
@@ -106,6 +113,8 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.Attack:
                     agent.speed = 0f;
+                    ChangeEyeColor();
+
                     if (agent.isOnNavMesh && canAttack)
                     {
                         Attack();
@@ -120,6 +129,7 @@ public class EnemyAI : MonoBehaviour
 
                 case EnemySM.AttackCooldown:
                     agent.speed = 0f;
+                    ResetEyeColor();
                     if (!isAttackTimerOn)
                     {
                         StartCoroutine(AttackResetTimer(attackResetTime));
@@ -137,7 +147,16 @@ public class EnemyAI : MonoBehaviour
     {
         enemySM = EnemySM.Freeze;
     }
-
+    private void ChangeEyeColor()
+    {
+        leftEye.material = attackEyeMaterial;
+        rightEye.material = attackEyeMaterial;
+    }
+    private void ResetEyeColor()
+    {
+        leftEye.material = originalEyeMaterial;
+        rightEye.material = originalEyeMaterial;
+    }
     private void Chase()
     {
         //Debug.Log("Moving");
