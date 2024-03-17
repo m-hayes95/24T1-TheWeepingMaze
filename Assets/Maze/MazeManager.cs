@@ -57,12 +57,11 @@ public class MazeManager : MonoBehaviour
     private void Awake()
     {
         BuildMaze();
-        //SpawnEnemies();
     }
     public void ReBuildMaze()
     {
         BuildMaze();
-        FindObjectOfType<Torch>().ResetTorchHealth();
+        FindObjectOfType<Torch>().ResetTorch();
     }
     private void BuildMaze()
     {
@@ -115,17 +114,14 @@ public class MazeManager : MonoBehaviour
         
         OnDestroy();
     }
-
     private void BakeNewNavMesh()
     {
         GetComponent<NavMeshSurface>().BuildNavMesh();
     }
-
     private void ClearCurrentNavMesh()
     {
         GetComponent<NavMeshSurface>().RemoveData();
     }
-
     private void PlacePlayer()
     {
         // Spawn player - /4 to make sure player spawns in bottom left area,
@@ -139,7 +135,6 @@ public class MazeManager : MonoBehaviour
                 )
             );
     }
-
     private void SpawnEnemies()
     {
         // Spawn enemies at random locations throughout the maze
@@ -190,12 +185,10 @@ public class MazeManager : MonoBehaviour
 
 
     }
-
     private void PlaceEnemies()
     {
         
     }
-
     private void PlaceEndGoal()
     {
         // Spawn End Goal
@@ -210,7 +203,6 @@ public class MazeManager : MonoBehaviour
         //Debug.Log($" Coodinates for goal: {coordinatesGoal}");
         goal.RePosition(maze, coordinatesGoal);
     }
-
     private void OnDestroy()
     {
         maze.Dispose();

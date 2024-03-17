@@ -15,10 +15,12 @@ public class Torch : MonoBehaviour
     private float torchOnDecayMultiplier;
     [SerializeField, Range(1f, 5f), Tooltip("Set the decay rate for battery health when the torch is OFF (A value of 1 is equal to -1 each second).")]
     private float torchOffDecayMultiplier;
+    [SerializeField, Range(0f, 2f), Tooltip("Set how quickly the torches light's intensity will decrease.")]
+    private float intensityDecrease = .5f;
 
-
+    private new Light light;
+    private float initalLightIntensity;
     private float batteryHealth;
-    private bool doEventOnce = false; 
     private bool isTorchOn;
     public bool IsTorchOn
     {
@@ -30,6 +32,8 @@ public class Torch : MonoBehaviour
     {
         isTorchOn = false;
         batteryHealth = maxBatteryHealth;
+        light = _torch.GetComponentInChildren<Light>();
+        initalLightIntensity = light.intensity; // Store the original value
     }
 
     private void Update()
@@ -40,49 +44,49 @@ public class Torch : MonoBehaviour
             // Reduce the battery health over time, reduce by less if its switched off 
             if (batteryHealth > 0)
             {
-                if (IsTorchOn)
-                {
-                    batteryHealth -= Time.deltaTime * torchOnDecayMultiplier;
-                }
-                else
-                {
-                    batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
-                }
+                ReduceLightBatteryAndIntensityOverTime();   
             }
 
             if (batteryHealth <= 0)
             {
-                // Game Over
+                batteryHealth = 0;
+                light.intensity = 0;
                 OnBatteryZero();
             }
         }
         
     }
+
     public void ToggleTorch()
     {
         _torch.SetActive(!_torch.activeSelf);
         isTorchOn = !isTorchOn;
     }
-
     public void TakeDamage(float damage)
     {
         batteryHealth -= damage;
     }
-
-    public void ResetTorchHealth()
+    public void ResetTorch()
     {
         batteryHealth = maxBatteryHealth;
+        light.intensity = initalLightIntensity;
     }
-
-    private void ReduceLightInstensity()
-    {
-        // Reduce the light power as the battery health falls
-    }
-
     public float GetRemainingBatteryTime()
     {
         return batteryHealth;
     }
 
+    private void ReduceLightBatteryAndIntensityOverTime()
+    {
+        if (IsTorchOn)
+        {
+            batteryHealth -= Time.deltaTime * torchOnDecayMultiplier;
+        }
+        else
+        {
+            batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
+        }
 
+        light.intensity -= intensityDecrease * Time.deltaTime * (light.intensity / batteryHealth);
+    }
 }
