@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class Player : MonoBehaviour
 {
@@ -12,16 +15,34 @@ public class Player : MonoBehaviour
     private float cameraShakeIntensity = 1f;
     [SerializeField, Range(0f, 5f), Tooltip("Set the multipler of the knockback force.")] 
     private int knockbackForceMultipler = 4;
+    [SerializeField]
+    private List<GameObject> playerBody = new List<GameObject>();
 
     private PlayerController controller;
     private Animation walkingAnim;
     private Rigidbody rb;
+    private Torch torch;
+
+    private Color hitColor = Color.red;
+    private List<Color> initialColors = new List<Color>();
+    
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
+        torch = GetComponent<Torch>();  
         walkingAnim = GetComponentInChildren<Animation>();
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < playerBody.Count; i++)
+        {
+            Renderer renderer = playerBody[i].GetComponent<Renderer>();
+            Color originalColor = renderer.material.color;
+            initialColors.Add(originalColor);
+        }
     }
 
     private void Update()
@@ -52,6 +73,8 @@ public class Player : MonoBehaviour
         transform.position = position + offsetZ;
         controller.enabled = true;
         gameObject.SetActive(true);
+        ResetPlayerColor();
+        //Debug.Log("Player reset");
     }
 
     public void PlayerHit(Vector3 enemyPosition)
@@ -59,15 +82,47 @@ public class Player : MonoBehaviour
         // Add knockback opposite from enemy position
         Vector3 knockbackDirection = (transform.position - enemyPosition).normalized;
         ApplyKnockback(knockbackDirection);
+
         // Add hit sound
-            
-        // Add red material??
+        ApplyHitMaterial();    
 
         // Screenshake
         float shakeTimer = 0.1f;
         CameraShake.Instance.PlayCameraShake(cameraShakeIntensity, shakeTimer);
     }
 
+    private void ApplyHitMaterial()
+    {
+        float timer = .5f;
+        for (int i = 0; i < playerBody.Count; i++)
+        {
+            Renderer renderer = playerBody[i].GetComponent<Renderer>();
+            Color originalColor = renderer.material.color;
+            StartCoroutine(ChangeColourTimer(timer, originalColor, renderer));
+        }
+    }
+    private IEnumerator ChangeColourTimer(float timer, Color originalColor, Renderer renderer)
+    {
+        renderer.material.color = hitColor;
+        yield return new WaitForSeconds(timer);
+        renderer.material.color = originalColor;
+        Debug.Log("Change Colour on hit");
+    }
+    private void ResetPlayerColor()
+    {
+        for (int i = 0; i < playerBody.Count; i++)
+        {
+            if (i < initialColors.Count)
+            {
+                Renderer renderer = playerBody[i].GetComponent<Renderer>();
+                renderer.material.color = initialColors[i];
+            } 
+            else
+            {
+                Debug.LogWarning($"Index out of range. Intial Colours contains {initialColors.Count} elements.");
+            }
+        }
+    }
     private void ApplyKnockback(Vector3 direction)
     {
         rb.velocity = Vector3.zero; // Reset velocity to prevent inconsitent events

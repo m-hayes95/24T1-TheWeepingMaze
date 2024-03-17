@@ -778,6 +778,11 @@ MonoBehaviour:
   playerVertOffset: 1
   cameraShakeIntensity: 1
   knockbackForceMultipler: 3
+  playerBody:
+  - {fileID: 1764529230}
+  - {fileID: 708199557}
+  - {fileID: 1869704269}
+  - {fileID: 1847660696}
 --- !u!54 &268537197
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -818,7 +823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _torch: {fileID: 1036992905}
-  maxBatteryHealth: 29.7
+  maxBatteryHealth: 35.9
   torchOnDecayMultiplier: 2
   torchOffDecayMultiplier: 1
   intensityDecrease: 0.5
