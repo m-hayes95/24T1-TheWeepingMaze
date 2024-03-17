@@ -2,16 +2,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField, Range(0f,20f)] float speed;
-    [SerializeField, Range(0f,100f)] float rotateSpeed;
-    [SerializeField, Range(0f,1f)] float playerVertOffset;
-    
+    [SerializeField, Range(0f,20f), Tooltip("Set the speed of the player.")] 
+    private float speed;
+    [SerializeField, Range(0f,100f), Tooltip("Set the roate speed of the player.")]
+    private float rotateSpeed;
+    [SerializeField, Range(0f,1f), Tooltip("Set a verticle offset the player will spawn above the ground.")] 
+    private float playerVertOffset;
+    [SerializeField, Range(0f,3f), Tooltip("Set the value of the camera shake intensity when hit.")] 
+    private float cameraShakeIntensity = 1f;
+    [SerializeField, Range(0f, 5f), Tooltip("Set the multipler of the knockback force.")] 
+    private int knockbackForceMultipler = 4;
+
     private PlayerController controller;
     private Animation walkingAnim;
+    private Rigidbody rb;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
+        rb = GetComponent<Rigidbody>();
         walkingAnim = GetComponentInChildren<Animation>();
     }
 
@@ -34,7 +43,6 @@ public class Player : MonoBehaviour
             PlayerMovement();
             RotatePlayerMousePosDelta();
         }
-        
     }
 
     public void FindStartPosition(Vector3 position)
@@ -46,15 +54,25 @@ public class Player : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void PlayerHit() // Called from enemy
+    public void PlayerHit(Vector3 enemyPosition)
     {
-        // Add knockback
+        // Add knockback opposite from enemy position
+        Vector3 knockbackDirection = (transform.position - enemyPosition).normalized;
+        ApplyKnockback(knockbackDirection);
         // Add hit sound
-        // Add Screenshake
+            
         // Add red material??
+
+        // Screenshake
+        float shakeTimer = 0.1f;
+        CameraShake.Instance.PlayCameraShake(cameraShakeIntensity, shakeTimer);
     }
 
-    
+    private void ApplyKnockback(Vector3 direction)
+    {
+        rb.velocity = Vector3.zero; // Reset velocity to prevent inconsitent events
+        rb.AddForce(direction * knockbackForceMultipler, ForceMode.Impulse);
+    }
     private void PlayerMovement()
     {
         Vector2 inputVector = controller.GetMoveVectorNormalized();
@@ -81,9 +99,6 @@ public class Player : MonoBehaviour
             walkingAnim.Rewind();
         }
     }
-
-
-
     // This rotation moves left and right when moving the mouse across the screen
     private void RotatePlayerMousePosDelta()
     {

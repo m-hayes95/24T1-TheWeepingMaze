@@ -131,7 +131,11 @@ public class EnemyAI : MonoBehaviour
                     break;
             }
         }
-        
+    }
+
+    public void FreezeEnemy()
+    {
+        enemySM = EnemySM.Freeze;
     }
 
     private void Chase()
@@ -139,7 +143,6 @@ public class EnemyAI : MonoBehaviour
         //Debug.Log("Moving");
         agent.destination = player.transform.position;
     }
-
     private void Attack()
     {
         canAttack = false;
@@ -147,14 +150,9 @@ public class EnemyAI : MonoBehaviour
         if (!isAttackTimerOn)
         {
             torch.TakeDamage(damageToTorch);
+            player.PlayerHit(transform.position);
         }
     }
-
-    public void FreezeEnemy()
-    {
-        enemySM = EnemySM.Freeze;
-    }
-    
     private IEnumerator FreezeEnemyTimer()
     {
         isTimerOn = true;   
@@ -185,11 +183,6 @@ public class EnemyAI : MonoBehaviour
         {
             enemySM = EnemySM.Chase;
         }
-        
     }
-
-
-
-
 }
 
