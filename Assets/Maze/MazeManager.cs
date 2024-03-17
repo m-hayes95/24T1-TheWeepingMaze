@@ -45,15 +45,33 @@ public class MazeManager : MonoBehaviour
     private MazeCellObject[] cellObjects;
     private Maze maze;
 
+    private void OnEnable()
+    {
+        Torch.OnBatteryZero += EndGame;
+    }
+    private void OnDisable()
+    {
+        Torch.OnBatteryZero -= EndGame;
+    }
 
     private void Awake()
+    {
+        BuildMaze();
+        //SpawnEnemies();
+    }
+    public void ReBuildMaze()
+    {
+        BuildMaze();
+        FindObjectOfType<Torch>().ResetTorchHealth();
+    }
+    private void BuildMaze()
     {
         // Build maze
         maze = new Maze(mazeSize);
 
-        new FindDiagonalPassagesJob 
-        { 
-            maze = maze  
+        new FindDiagonalPassagesJob
+        {
+            maze = maze
         }.ScheduleParallel(
             maze.Length, maze.SizeEW, new GenerateMazeJob
             {
@@ -69,9 +87,47 @@ public class MazeManager : MonoBehaviour
         {
             cellObjects = new MazeCellObject[maze.Length];
         }
+
         visualisation.Visualise(maze, cellObjects, gameObject);
         BakeNewNavMesh();
+        GameManager.isGameRunning = true;
+        if (GameManager.showDebugForIsGameRunningStatus)
+            Debug.Log($"is game running set to {GameManager.isGameRunning}");
 
+        PlacePlayer();
+        SpawnEnemies();
+        PlaceEndGoal();
+    }
+    private void EndGame()
+    {
+        ClearCurrentNavMesh();
+
+        for (int i = 0; i < cellObjects.Length; i++)
+        {
+            cellObjects[i].Recycle();
+        }
+        for (int e = 0; e < enemies.Count; e++)
+        {
+            Destroy(enemies[e].gameObject);
+        }
+        goal.gameObject.SetActive(false);
+        Debug.Log($"Destroy all maze cells && enemies && end goal - Number of maze cells: {cellObjects.Length}, Number of enemies: {enemies.Count}");
+        
+        OnDestroy();
+    }
+
+    private void BakeNewNavMesh()
+    {
+        GetComponent<NavMeshSurface>().BuildNavMesh();
+    }
+
+    private void ClearCurrentNavMesh()
+    {
+        GetComponent<NavMeshSurface>().RemoveData();
+    }
+
+    private void PlacePlayer()
+    {
         // Spawn player - /4 to make sure player spawns in bottom left area,
         // by reducing the potential amount of size
         if (seed != 0)
@@ -82,7 +138,10 @@ public class MazeManager : MonoBehaviour
             int2(Random.Range(0, mazeSize.x / 4), Random.Range(0, mazeSize.y / 4))
                 )
             );
+    }
 
+    private void SpawnEnemies()
+    {
         // Spawn enemies at random locations throughout the maze
         enemies = new List<EnemySpawner>();
         for (int i = 0; i < numberOfEnemies; i++)
@@ -99,7 +158,7 @@ public class MazeManager : MonoBehaviour
                 else
                 {
                     Debug.LogWarning("Enemies not set to a parent under the hierachy, add a game object reference to the 'Enemy Spawn Parent' field under the Maze Manager script");
-                }       
+                }
             }
             else
             {
@@ -110,7 +169,7 @@ public class MazeManager : MonoBehaviour
 
         int2 halfsize = mazeSize / 2;
 
-        for (int i = 0; i < enemies.Count; i++) 
+        for (int i = 0; i < enemies.Count; i++)
         {
             // Make sure enemies spawn away from the player,
             // by adding half the maze size to there spawn pos, if it is under half size
@@ -129,44 +188,31 @@ public class MazeManager : MonoBehaviour
             enemies[i].SpawnEnemies(maze, coordinates);
         }
 
+
+    }
+
+    private void PlaceEnemies()
+    {
+        
+    }
+
+    private void PlaceEndGoal()
+    {
         // Spawn End Goal
         minGoalSpawnArea.x = Mathf.Clamp(minGoalSpawnArea.x, 0, mazeSize.x);
         minGoalSpawnArea.y = Mathf.Clamp(minGoalSpawnArea.y, 0, mazeSize.y);
         // Need to -1 from max size or it will spawn outside the maze
         var maxSize = int2(mazeSize.x - 1, mazeSize.y - 1);
         var coordinatesGoal = int2(
-            Random.Range(maxSize.x - minGoalSpawnArea.x, maxSize.x), 
+            Random.Range(maxSize.x - minGoalSpawnArea.x, maxSize.x),
             Random.Range(maxSize.y - minGoalSpawnArea.y, maxSize.y)
         );
         //Debug.Log($" Coodinates for goal: {coordinatesGoal}");
-        goal.FindPositionAndSpawn(maze, coordinatesGoal);
-
-        
+        goal.RePosition(maze, coordinatesGoal);
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            EndGame();
-        }
-    }
-
-    private void EndGame()
-    {
-        for (int i = 0; i < cellObjects.Length; i++)
-        {
-            cellObjects[i].Recycle();
-        }
-        for (int e = 0; e < enemies.Count; e++)
-        {
-            Destroy(enemies[e].gameObject);
-        }
-        Destroy(goal.gameObject);
-    }
-
-    private void BakeNewNavMesh()
-    {
-        GetComponent<NavMeshSurface>().BuildNavMesh();
+        maze.Dispose();
     }
 }

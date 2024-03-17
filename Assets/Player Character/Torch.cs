@@ -1,90 +1,88 @@
 using System.Collections;
-using UnityEngine;
+using UnityEngine;  
 
 public class Torch : MonoBehaviour
 {
+    // Event for when the torches battery reaches 0
+    public delegate void BatteryZeroAction();
+    public static event BatteryZeroAction OnBatteryZero;
+
     [SerializeField, Tooltip("Add a reference to the torch game object here.")] 
     private GameObject _torch;
-    [SerializeField][Range(0f, 60f), Tooltip("Set how long the battery will last for.")] 
-    private float batteryMaxTime;
-    [SerializeField][Range(0f, 10f), Tooltip("Set how fast the battery will recharge at (Only used when the battery is fully empty).")] 
-    private float fromEmptyRechargeTimer;
-    
-    [SerializeField, Tooltip("Set the rate of how fast / slow the torch will charge (Except for when charging from empty!). " +
-        "Time in seconds is divided by the set number (E.g. 2 will divide each second in half).")] 
-    private float rechargeRate;
+    [SerializeField, Range(0f, 60f), Tooltip("Set how long the battery will last for (set how long the game will last for).")] 
+    private float maxBatteryHealth;
+    [SerializeField, Range(2f, 5f), Tooltip("Set the decay rate for battery health when the torch is ON.")]
+    private float torchOnDecayMultiplier;
+    [SerializeField, Range(1f, 5f), Tooltip("Set the decay rate for battery health when the torch is OFF (A value of 1 is equal to -1 each second).")]
+    private float torchOffDecayMultiplier;
 
-    private float batteryCurrentTime;
-    private bool isTorchCharging = false;
+
+    private float batteryHealth;
+    private bool doEventOnce = false; 
     private bool isTorchOn;
     public bool IsTorchOn
     {
         get { return isTorchOn; }
         set { isTorchOn = value; }
     }
-    
 
     private void Start()
     {
         isTorchOn = false;
-        batteryCurrentTime = batteryMaxTime;
+        batteryHealth = maxBatteryHealth;
     }
 
     private void Update()
     {
-        //Debug.Log($"Is torch on {isTorchOn} "); 
-
-        if (batteryCurrentTime >= 0f && isTorchOn)
+        if (GameManager.isGameRunning)
         {
-            batteryCurrentTime -= Time.deltaTime;
-            if (batteryCurrentTime <= 0f)
+            //Debug.Log($"Is torch on {isTorchOn} "); 
+            // Reduce the battery health over time, reduce by less if its switched off 
+            if (batteryHealth > 0)
             {
-                batteryCurrentTime = 0f;
-                StartCoroutine(ChargeBatteryFromEmpty());
+                if (IsTorchOn)
+                {
+                    batteryHealth -= Time.deltaTime * torchOnDecayMultiplier;
+                }
+                else
+                {
+                    batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
+                }
+            }
+
+            if (batteryHealth <= 0)
+            {
+                // Game Over
+                OnBatteryZero();
             }
         }
-
-        ChargeBatteryOvertime();
+        
     }
     public void ToggleTorch()
     {
-        if (!isTorchCharging)
-        {
-            _torch.SetActive(!_torch.activeSelf);
-            isTorchOn = !isTorchOn;
-        }
+        _torch.SetActive(!_torch.activeSelf);
+        isTorchOn = !isTorchOn;
     }
 
-    // When the battery dies whilst the torch is on,
-    // the player has to wait until its completely recharged to toggle back on.
-    private IEnumerator ChargeBatteryFromEmpty()
+    public void TakeDamage(float damage)
     {
-        ToggleTorch();
-        isTorchCharging = true;
-        //Debug.Log("Battery is Charging...");
-
-        yield return new WaitForSeconds(fromEmptyRechargeTimer);
-        isTorchCharging = false;
-        batteryCurrentTime = batteryMaxTime;
-        //Debug.Log("Battery fully charged");
+        batteryHealth -= damage;
     }
 
-    // The battery will charge over time when not in use
-    private void ChargeBatteryOvertime()
+    public void ResetTorchHealth()
     {
-        if (!isTorchOn && !isTorchCharging &&
-            batteryCurrentTime < batteryMaxTime)
-        {
-            batteryCurrentTime += (Time.deltaTime / rechargeRate);
-            if (batteryCurrentTime > batteryMaxTime) 
-            {
-                batteryCurrentTime = batteryMaxTime;
-            }
-        }
+        batteryHealth = maxBatteryHealth;
     }
 
-    public float GetCurrentTorchTime()
+    private void ReduceLightInstensity()
     {
-        return batteryCurrentTime;
+        // Reduce the light power as the battery health falls
     }
+
+    public float GetRemainingBatteryTime()
+    {
+        return batteryHealth;
+    }
+
+
 }

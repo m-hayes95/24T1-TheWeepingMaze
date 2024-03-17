@@ -5,14 +5,12 @@ using TMPro;
 
 public class UIHUD : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI hp;
     [SerializeField] TextMeshProUGUI torchTimer;
-    [SerializeField] TextMeshProUGUI gameTimer;
+    [SerializeField] Torch torch;
 
     private void Update()
     {
-        hp.text = FindObjectOfType<Player>().GetPlayerHp().ToString();
-        torchTimer.text = FindObjectOfType<Torch>().GetCurrentTorchTime().ToString("00.0");
-        gameTimer.text = FindObjectOfType<GameManager>().GetCurrentGameTime().ToString("00.00");
+        if (torchTimer != null)
+            torchTimer.text = torch.GetRemainingBatteryTime().ToString("00.0");
     }
 }

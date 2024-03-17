@@ -5,24 +5,14 @@ public class Player : MonoBehaviour
     [SerializeField, Range(0f,20f)] float speed;
     [SerializeField, Range(0f,100f)] float rotateSpeed;
     [SerializeField, Range(0f,1f)] float playerVertOffset;
-    [SerializeField, Range(0, 5)] private int maxHp;
     
     private PlayerController controller;
-    private int hp;
     private Animation walkingAnim;
 
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
         walkingAnim = GetComponentInChildren<Animation>();
-    }
-    private void Start()
-    {
-        hp = maxHp;
-    }
-    public int GetPlayerHp()
-    {
-        return hp;
     }
 
     private void Update()
@@ -39,8 +29,12 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PlayerMovement();
-        RotatePlayerMousePosDelta();
+        if (GameManager.isGameRunning)
+        {
+            PlayerMovement();
+            RotatePlayerMousePosDelta();
+        }
+        
     }
 
     public void FindStartPosition(Vector3 position)
@@ -49,12 +43,18 @@ public class Player : MonoBehaviour
         controller.enabled = false;
         transform.position = position + offsetZ;
         controller.enabled = true;
+        gameObject.SetActive(true);
     }
 
-    public void TakeDamage(int damage)
+    public void PlayerHit() // Called from enemy
     {
-        hp -= damage;
+        // Add knockback
+        // Add hit sound
+        // Add Screenshake
+        // Add red material??
     }
+
+    
     private void PlayerMovement()
     {
         Vector2 inputVector = controller.GetMoveVectorNormalized();
@@ -74,6 +74,7 @@ public class Player : MonoBehaviour
             walkingAnim.Rewind();
         }
     }
+
 
     // This rotation moves left and right when moving the mouse across the screen
     private void RotatePlayerMousePosDelta()

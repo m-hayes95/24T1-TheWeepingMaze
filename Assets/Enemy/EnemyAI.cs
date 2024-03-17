@@ -16,12 +16,15 @@ public class EnemyAI : MonoBehaviour
     private float freezeTimer;
     [SerializeField, Range(0f, 10f), Tooltip("Set the enemy attack cooldown.")]
     private float attackResetTime = 3f;
+    [SerializeField, Range(0f, 10f), Tooltip("Set how much damage the torch's battery health will take on each attack.")]
+    private float damageToTorch = 10f;
 
     private enum EnemySM { Idle, Chase, Freeze, Attack, AttackCooldown };
     [SerializeField] private EnemySM enemySM; // Change TO DO
     private NavMeshAgent agent;
     private Player player;
     private Torch torch;
+    private GameManager gameManager;
     private float distanceFromPlayer;
     private bool isTimerOn = false; // Do timer once
     private bool canAttack = true;
@@ -38,6 +41,7 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>();
         torch = FindObjectOfType<Torch>();
+        gameManager = FindObjectOfType<GameManager>();
         enemySM = EnemySM.Idle;
     }
     private void Update()
@@ -55,74 +59,79 @@ public class EnemyAI : MonoBehaviour
         }
         //Debug.Log($" Distance: {distanceFromPlayer} Attack at: {distanceFromPlayerAttackThreshold}");
 
-        switch (enemySM)
+        if (GameManager.isGameRunning)
         {
-            case EnemySM.Idle:
-                agent.speed = 0f;
-                if (distanceFromPlayer <= distanceFromPlayerChaseThreshold)
-                {
-                    enemySM = EnemySM.Chase;
-                }
-                break;
-
-            case EnemySM.Chase:
-                agent.speed = chaseSpeed;
-                if (agent.isOnNavMesh)
-                {
-                    Chase();
-                }
-                else
-                {
-                    Debug.LogWarning($"{gameObject.name} is not on nav mesh. Failed Chase state. Current state = {enemySM}");
-                    enemySM = EnemySM.Idle;
-                }
-                if (distanceFromPlayer >= distanceFromPlayerChaseThreshold)
-                {
-                    enemySM = EnemySM.Idle;
-                } 
-                else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold 
-                    && canAttack)
-                {
-                    enemySM = EnemySM.Attack;
-                }
-                break;
-
-            case EnemySM.Freeze:
-                agent.speed = 0f;
-                if (torch.IsTorchOn)
-                {
-                    if (!isTimerOn)
+            switch (enemySM)
+            {
+                case EnemySM.Idle:
+                    agent.speed = 0f;
+                    if (distanceFromPlayer <= distanceFromPlayerChaseThreshold)
                     {
-                        StartCoroutine(FreezeEnemyTimer());
+                        enemySM = EnemySM.Chase;
                     }
-                }
-                break;
+                    break;
 
-            case EnemySM.Attack:
-                agent.speed = 0f;
-                if (agent.isOnNavMesh && canAttack)
-                {
-                    Attack();
-                    enemySM = EnemySM.AttackCooldown;
-                } else
-                {
-                    Debug.LogWarning($"{gameObject.name}  Failed to attack Player. Current state = {enemySM}");
-                    enemySM = EnemySM.AttackCooldown;
-                }
-                break;
+                case EnemySM.Chase:
+                    agent.speed = chaseSpeed;
+                    if (agent.isOnNavMesh)
+                    {
+                        Chase();
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{gameObject.name} is not on nav mesh. Failed Chase state. Current state = {enemySM}");
+                        enemySM = EnemySM.Idle;
+                    }
+                    if (distanceFromPlayer >= distanceFromPlayerChaseThreshold)
+                    {
+                        enemySM = EnemySM.Idle;
+                    }
+                    else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold
+                        && canAttack)
+                    {
+                        enemySM = EnemySM.Attack;
+                    }
+                    break;
 
-            case EnemySM.AttackCooldown:
-                agent.speed = 0f;
-                if (!isAttackTimerOn) 
-                {
-                    StartCoroutine(AttackResetTimer(attackResetTime));
-                }
-                
-                break;
+                case EnemySM.Freeze:
+                    agent.speed = 0f;
+                    if (torch.IsTorchOn)
+                    {
+                        if (!isTimerOn)
+                        {
+                            StartCoroutine(FreezeEnemyTimer());
+                        }
+                    }
+                    break;
 
-            default:
-                break;
+                case EnemySM.Attack:
+                    agent.speed = 0f;
+                    if (agent.isOnNavMesh && canAttack)
+                    {
+                        Attack();
+                        enemySM = EnemySM.AttackCooldown;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{gameObject.name}  Failed to attack Player. Current state = {enemySM}");
+                        enemySM = EnemySM.AttackCooldown;
+                    }
+                    break;
+
+                case EnemySM.AttackCooldown:
+                    agent.speed = 0f;
+                    if (!isAttackTimerOn)
+                    {
+                        StartCoroutine(AttackResetTimer(attackResetTime));
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
         }
+        
     }
 
     private void Chase()
@@ -137,8 +146,7 @@ public class EnemyAI : MonoBehaviour
 
         if (!isAttackTimerOn)
         {
-            int damageDealt = 1;
-            player.TakeDamage(damageDealt);
+            torch.TakeDamage(damageToTorch);
         }
     }
 
