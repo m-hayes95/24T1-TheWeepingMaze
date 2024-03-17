@@ -54,7 +54,6 @@ public class Torch : MonoBehaviour
                 OnBatteryZero();
             }
         }
-        
     }
 
     public void ToggleTorch()
@@ -65,6 +64,9 @@ public class Torch : MonoBehaviour
     public void TakeDamage(float damage)
     {
         batteryHealth -= damage;
+
+        float intensity = 3f, shakeTimer = 0.1f;
+        CameraShake.Instance.PlayCameraShake(intensity, shakeTimer);
     }
     public void ResetTorch()
     {
