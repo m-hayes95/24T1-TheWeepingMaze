@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] GameObject playerHUD;
     [SerializeField, Range(0f,20f), Tooltip("Set the speed of the player.")] 
     private float speed;
     [SerializeField, Range(0f,100f), Tooltip("Set the roate speed of the player.")]
@@ -74,6 +75,7 @@ public class Player : MonoBehaviour
         controller.enabled = true;
         gameObject.SetActive(true);
         ResetPlayerColor();
+        playerHUD.gameObject.SetActive(true);
         //Debug.Log("Player reset");
     }
 
