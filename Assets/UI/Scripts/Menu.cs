@@ -6,6 +6,7 @@ public class Menu : MonoBehaviour
 {
     [SerializeField] private bool isGamePaused = false;
     [SerializeField] private GameObject menu;
+    [SerializeField] private GameObject playerHUD;
     private MazeManager mazeManager;
     private void Start()
     {
@@ -23,6 +24,7 @@ public class Menu : MonoBehaviour
     {
         isGamePaused = true;
         menu.SetActive(true);
+        playerHUD.SetActive(false);
         GameManager.isGameRunning = false;
         if (GameManager.showDebugForIsGameRunningStatus)
             Debug.Log($"is game running set to {GameManager.isGameRunning}");
@@ -31,14 +33,19 @@ public class Menu : MonoBehaviour
     {
         isGamePaused = false;
         menu.SetActive(false);
+        playerHUD.SetActive(true); 
         GameManager.isGameRunning = true;
         if (GameManager.showDebugForIsGameRunningStatus)
             Debug.Log($"is game running set to {GameManager.isGameRunning}");
     }
     public void RestartGame()
     {
-        //SceneManager.LoadScene(0);
         mazeManager.ReBuildMaze();
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(0);
     }
     public void QuitGame()
     {
