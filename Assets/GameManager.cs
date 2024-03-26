@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static bool isGameRunning;
+    public static bool isGameRunning = false;
     public static bool showDebugForIsGameRunningStatus = false; // So I can turn off all debugs that are letting me know they changed this variable
 
     [SerializeField] private GameObject endScreen;

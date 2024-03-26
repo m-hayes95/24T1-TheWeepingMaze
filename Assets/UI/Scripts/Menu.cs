@@ -45,7 +45,7 @@ public class Menu : MonoBehaviour
 
     public void ReloadScene()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     public void QuitGame()
     {
