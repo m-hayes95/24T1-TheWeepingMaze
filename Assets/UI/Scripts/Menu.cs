@@ -7,6 +7,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private bool isGamePaused = false;
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject playerHUD;
+    [SerializeField] private GameObject settingsMenu;
     private MazeManager mazeManager;
     private void Start()
     {
@@ -26,6 +27,12 @@ public class Menu : MonoBehaviour
         menu.SetActive(true);
         playerHUD.SetActive(false);
         GameManager.isGameRunning = false;
+        // Close settings tab if it was left open
+        if (settingsMenu.activeInHierarchy)
+        {
+            settingsMenu.SetActive(false);
+        }
+
         if (GameManager.showDebugForIsGameRunningStatus)
             Debug.Log($"is game running set to {GameManager.isGameRunning}");
     }
@@ -35,6 +42,7 @@ public class Menu : MonoBehaviour
         menu.SetActive(false);
         playerHUD.SetActive(true); 
         GameManager.isGameRunning = true;
+
         if (GameManager.showDebugForIsGameRunningStatus)
             Debug.Log($"is game running set to {GameManager.isGameRunning}");
     }

@@ -4047,6 +4047,7 @@ MonoBehaviour:
   isGamePaused: 0
   menu: {fileID: 1371903453}
   playerHUD: {fileID: 1256320879}
+  settingsMenu: {fileID: 1273124709}
 --- !u!4 &979994737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9044715279519771278, guid: 30f7046cc7353b24a868356c6e5b32f5, type: 3}
