@@ -20,6 +20,7 @@ public class Torch : MonoBehaviour
 
     private new Light light;
     private Player player;
+    private AudioSource lightSwitchSFX;
     private float initalLightIntensity;
     private float batteryHealth;
     private bool isTorchOn;
@@ -36,6 +37,7 @@ public class Torch : MonoBehaviour
         light = _torch.GetComponentInChildren<Light>();
         player = GetComponent<Player>();
         initalLightIntensity = light.intensity; // Store the original value
+        lightSwitchSFX = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -62,6 +64,7 @@ public class Torch : MonoBehaviour
     {
         _torch.SetActive(!_torch.activeSelf);
         isTorchOn = !isTorchOn;
+        lightSwitchSFX.Play();
     }
     public void TakeDamage(float damage)
     {
