@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     {
         if (walkingAnim != null)
         {
-            Animate();
+            AnimateLegsPlayFootStepSounds();
         } 
         else
         {
@@ -144,12 +144,13 @@ public class Player : MonoBehaviour
         transform.forward = Vector3.Slerp(transform.forward, moveDirection,
             rotateForwardSpeed * Time.deltaTime);
     }
-    private void Animate()
+    private void AnimateLegsPlayFootStepSounds()
     {
         // Only animate when the player is moving, else return the animation back to its inital point
         if (controller.GetMoveVectorNormalized() != Vector2.zero)
         {
             walkingAnim.Play();
+            SoundManager.Instance.PlayPlayerFootStepSound();
         }
         else
         {
