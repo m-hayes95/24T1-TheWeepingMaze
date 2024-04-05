@@ -987,8 +987,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHUD: {fileID: 1256320879}
-  speed: 2
-  rotateSpeed: 47
+  speed: 1.2
+  rotateSpeed: 20
   playerVertOffset: 1
   cameraShakeIntensity: 1
   knockbackForceMultipler: 3
