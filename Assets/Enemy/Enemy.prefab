@@ -1440,10 +1440,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseSpeed: 1.5
-  distanceFromPlayerChaseThreshold: 5
+  distanceFromPlayerChaseThreshold: 6
   distanceFromPlayerAttackThreshold: 0.5
-  freezeTimer: 5
-  attackResetTime: 3
+  freezeTimer: 7
+  attackResetTime: 5
   damageToTorch: 10
   enemySM: 0
   leftEye: {fileID: 6798691537117981498}
