@@ -111,6 +111,7 @@ public class EnemyAI : MonoBehaviour
                     else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold
                         && canAttack)
                     {
+                        SoundManager.Instance.PlayEnemyAttackSound();
                         enemySM = EnemySM.Attack;
                     }
                     break;
@@ -196,7 +197,6 @@ public class EnemyAI : MonoBehaviour
     private void Attack()
     {
         canAttack = false;
-
         if (!isAttackTimerOn)
         {
             torch.TakeDamage(damageToTorch);

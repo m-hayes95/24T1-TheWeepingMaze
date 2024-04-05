@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         Vector3 knockbackDirection = (transform.position - enemyPosition).normalized;
         ApplyKnockback(knockbackDirection);
 
-        // Add hit sound
+        SoundManager.Instance.PlayPlayerHitSound();
         ApplyHitMaterial();    
 
         // Screenshake

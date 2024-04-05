@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource chasePlayerTrack, enemyAttack;
     [SerializeField] private AudioSource mouseClick;
 
+    private int stepCount = 0;
     private void Awake()
     {
         if (Instance == null)
@@ -31,21 +32,22 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayEachFootStep()
-    {
-        int rand = Random.Range(0, 2);
-
-        if (rand == 0)
+    { 
+        if (stepCount == 0)
         {
             if (!footStep1.isPlaying && !footStep2.isPlaying)
             {
                 footStep1.Play();
+                stepCount = 1;
             }
+            
         }
-        else
+        else if (stepCount == 1)
         {
             if (!footStep1.isPlaying && !footStep2.isPlaying)
             {
                 footStep2.Play();
+                stepCount = 0;
             }
         }
     }
