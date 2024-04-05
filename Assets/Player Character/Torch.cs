@@ -62,6 +62,7 @@ public class Torch : MonoBehaviour
     {
         _torch.SetActive(!_torch.activeSelf);
         isTorchOn = !isTorchOn;
+        SoundManager.Instance.PlayToggleTorchSound();
     }
     public void TakeDamage(float damage)
     {

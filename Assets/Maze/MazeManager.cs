@@ -54,7 +54,7 @@ public class MazeManager : MonoBehaviour
         Torch.OnBatteryZero -= EndGame;
     }
 
-    private void Awake()
+    public void Awake()
     {
         BuildMaze();
     }
@@ -124,6 +124,7 @@ public class MazeManager : MonoBehaviour
     }
     private void PlacePlayer()
     {
+        player.gameObject.SetActive(true);
         // Spawn player - /4 to make sure player spawns in bottom left area,
         // by reducing the potential amount of size
         if (seed != 0)

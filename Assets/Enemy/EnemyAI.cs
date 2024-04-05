@@ -29,6 +29,7 @@ public class EnemyAI : MonoBehaviour
     private Torch torch;
     private GameManager gameManager;
     private EnemyAnimation animation;
+ 
     private float distanceFromPlayer;
     private bool isTimerOn = false; // Do timer once
     private bool canAttack = true;
@@ -49,6 +50,7 @@ public class EnemyAI : MonoBehaviour
         torch = FindObjectOfType<Torch>();
         gameManager = FindObjectOfType<GameManager>();
         enemySM = EnemySM.Idle;
+        
     }
     private void Update()
     {
@@ -72,7 +74,7 @@ public class EnemyAI : MonoBehaviour
                 case EnemySM.Idle:
                     agent.speed = 0f;
                     ResetEyeColor();
-
+                    
                     if (isInChaseAnimation)
                     {
                         animation.PlayEndChaseAnimation();
@@ -87,7 +89,7 @@ public class EnemyAI : MonoBehaviour
                 case EnemySM.Chase:
                     agent.speed = chaseSpeed;
                     ChangeEyeColor();
-
+                    SoundManager.Instance.PlayChasePlayerTrack();
                     if (!isInChaseAnimation)
                     {
                         animation.PlayStartChaseAnimation();
@@ -109,6 +111,7 @@ public class EnemyAI : MonoBehaviour
                     else if (distanceFromPlayer <= distanceFromPlayerAttackThreshold
                         && canAttack)
                     {
+                        SoundManager.Instance.PlayEnemyAttackSound();
                         enemySM = EnemySM.Attack;
                     }
                     break;
@@ -116,7 +119,7 @@ public class EnemyAI : MonoBehaviour
                 case EnemySM.Freeze:
                     agent.speed = 0f;
                     ResetEyeColor();
-
+                   
                     if (isInChaseAnimation)
                     {
                         animation.PlayEndChaseAnimation();
@@ -154,7 +157,7 @@ public class EnemyAI : MonoBehaviour
                 case EnemySM.AttackCooldown:
                     agent.speed = 0f;
                     ResetEyeColor();
-
+                    
                     if (!isAttackTimerOn)
                     {
                         StartCoroutine(AttackResetTimer(attackResetTime));
@@ -194,7 +197,6 @@ public class EnemyAI : MonoBehaviour
     private void Attack()
     {
         canAttack = false;
-
         if (!isAttackTimerOn)
         {
             torch.TakeDamage(damageToTorch);

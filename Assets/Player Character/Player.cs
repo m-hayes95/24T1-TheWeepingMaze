@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] GameObject playerHUD;
     [SerializeField, Range(0f,20f), Tooltip("Set the speed of the player.")] 
     private float speed;
     [SerializeField, Range(0f,100f), Tooltip("Set the roate speed of the player.")]
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
     {
         if (walkingAnim != null)
         {
-            Animate();
+            AnimateLegsPlayFootStepSounds();
         } 
         else
         {
@@ -72,8 +73,9 @@ public class Player : MonoBehaviour
         controller.enabled = false;
         transform.position = position + offsetZ;
         controller.enabled = true;
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
         ResetPlayerColor();
+        playerHUD.gameObject.SetActive(true);
         //Debug.Log("Player reset");
     }
 
@@ -83,7 +85,7 @@ public class Player : MonoBehaviour
         Vector3 knockbackDirection = (transform.position - enemyPosition).normalized;
         ApplyKnockback(knockbackDirection);
 
-        // Add hit sound
+        SoundManager.Instance.PlayPlayerHitSound();
         ApplyHitMaterial();    
 
         // Screenshake
@@ -142,12 +144,13 @@ public class Player : MonoBehaviour
         transform.forward = Vector3.Slerp(transform.forward, moveDirection,
             rotateForwardSpeed * Time.deltaTime);
     }
-    private void Animate()
+    private void AnimateLegsPlayFootStepSounds()
     {
         // Only animate when the player is moving, else return the animation back to its inital point
         if (controller.GetMoveVectorNormalized() != Vector2.zero)
         {
             walkingAnim.Play();
+            SoundManager.Instance.PlayPlayerFootStepSound();
         }
         else
         {
