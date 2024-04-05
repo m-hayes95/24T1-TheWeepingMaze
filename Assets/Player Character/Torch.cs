@@ -9,7 +9,7 @@ public class Torch : MonoBehaviour
 
     [SerializeField, Tooltip("Add a reference to the torch game object here.")] 
     private GameObject _torch;
-    [SerializeField, Range(0f, 60f), Tooltip("Set how long the battery will last for (set how long the game will last for).")] 
+    [SerializeField, Range(0f, 300f), Tooltip("Set how long the battery will last for (set how long the game will last for).")] 
     private float maxBatteryHealth;
     [SerializeField, Range(2f, 5f), Tooltip("Set the decay rate for battery health when the torch is ON.")]
     private float torchOnDecayMultiplier;
@@ -89,6 +89,7 @@ public class Torch : MonoBehaviour
             batteryHealth -= Time.deltaTime / torchOffDecayMultiplier;
         }
         // Reduce the torch light intensity relaitve to the torch battery health
-        light.intensity -= intensityDecrease * Time.deltaTime * (light.intensity / batteryHealth);
+        light.intensity -= 
+            intensityDecrease * Time.deltaTime * (light.intensity / batteryHealth);
     }
 }
