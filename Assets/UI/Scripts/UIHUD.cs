@@ -6,6 +6,7 @@ public class UIHUD : MonoBehaviour
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] private Torch torch;
     [SerializeField] private GameObject playerHUD;
+    [SerializeField] private GameObject howToPlayTextBox;
 
     private void OnEnable()
     {
@@ -24,6 +25,11 @@ public class UIHUD : MonoBehaviour
     private void Update()
     {
         healthBarSlider.value = torch.GetRemainingBatteryTime();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            howToPlayTextBox.SetActive(false);
+        }
     }
 
     private void TurnPlayerHUDOff()
