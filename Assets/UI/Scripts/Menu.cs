@@ -9,6 +9,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject menuButtons;
     [SerializeField] private GameObject playerHUD;
     [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject howToPlayMenu;
     private MazeManager mazeManager;
     private void Start()
     {
@@ -30,9 +31,10 @@ public class Menu : MonoBehaviour
         playerHUD.SetActive(false);
         GameManager.isGameRunning = false;
         // Close settings tab if it was left open
-        if (settingsMenu.activeInHierarchy)
+        if (settingsMenu.activeInHierarchy || howToPlayMenu.activeInHierarchy)
         {
             settingsMenu.SetActive(false);
+            howToPlayMenu.SetActive(false);
         }
         SoundManager.Instance.PlayMouseClickSound();
         if (GameManager.showDebugForIsGameRunningStatus)
