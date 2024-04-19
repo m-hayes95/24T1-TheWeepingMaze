@@ -8,6 +8,12 @@ Space = Toggle torch On / Off
 WASD = Move Up / Left / Down / Right
 Mouse = Torch movement
 
+Known bugs / outstanding works:
+- Enemies spawn on top of each other and move together
+- Red colour when hit does not reset
+- Torch light goes through walls
+- Setting menu not hooked up
+
 Folder Layout:
 For this project, I tried moving each mechanic and its asscoiated files into its own folder oppposed to having seperate files for scripts and prefabs, etc.
 

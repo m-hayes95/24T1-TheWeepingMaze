@@ -1909,8 +1909,8 @@ MonoBehaviour:
   enemy: {fileID: 763802120514677541, guid: 3761af0210965b545b6392d4d74c72bf, type: 3}
   goal: {fileID: 1148115415}
   minGoalSpawnArea:
-    x: 0
-    y: 0
+    x: 3
+    y: 3
   enemySpawnParent: {fileID: 2007789665}
 --- !u!114 &410593055
 MonoBehaviour:
