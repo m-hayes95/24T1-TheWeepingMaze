@@ -22,7 +22,8 @@ public class BehaviorTree : MonoBehaviour
         // Stop initial behaviour
         startedBehavior = false;
         // Allows access from other nodes
-        mRoot = new BTNode(this);
+        mRoot = new BTRepeater(this, new BTSequencer(this, 
+            new BTNode[] { new BTRandomWalkTest(this) }));
     }
 
     private void Update()
